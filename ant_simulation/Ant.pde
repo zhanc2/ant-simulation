@@ -1,5 +1,5 @@
 class Ant {
-  
+
   PVector position;
   PVector velocity;
   float age;
