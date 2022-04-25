@@ -9,7 +9,7 @@ class Ant {
   float speed;
   float strength;
   float nutritionLevel;
-  float foodCost;
+  float upkeepCost;
   float visionRadius;
   
   

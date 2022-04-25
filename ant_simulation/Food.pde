@@ -7,9 +7,9 @@ class Food {
   
   Food(float w, float x, float y) {
     this.weight = w;
-    position.x = x;
-    position.y = y;
-    currentAnts = new HashMap<Colony, ArrayList<Ant>>();
+    this.position.x = x;
+    this.position.y = y;
+    this.currentAnts = new HashMap<Colony, ArrayList<Ant>>();
   }
   
   void display() {
