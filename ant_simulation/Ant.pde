@@ -15,9 +15,11 @@ class Ant {
   float PosX;
   float PosY;
   
-  Ant(){
+  Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine){
     PosX = 50;
     PosY = 50;
+    speed = 5;
+    strength = 5;
   }
   
   void DrawAnt(){
@@ -25,6 +27,10 @@ class Ant {
     translate(PosX, PosY);
     triangle(-3, 5, 0, -5, 3, 5);
     popMatrix();
+  }
+  
+  void MoveAnt(){
+    
   }
   
 }
