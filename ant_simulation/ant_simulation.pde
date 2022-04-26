@@ -10,6 +10,10 @@ void setup() {
   
 void draw() {
   background(255);
-  Anthony.DrawAnt();
+  fill(0);
+  rect(-s.camera.x, -s.camera.y, width, height);
+  Anthony.DrawAnt(s.camera.x, s.camera.y);
+  s.updateCameraPos();
+  s.updateCameraPos(Anthony.PosX, Anthony.PosY);
   
 }

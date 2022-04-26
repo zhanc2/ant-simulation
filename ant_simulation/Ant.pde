@@ -26,12 +26,13 @@ class Ant {
     visionRadius = Vi;
   }
   
-  void DrawAnt(){
+  void DrawAnt(float camX, float camY){
     pushMatrix();
-    translate(PosX, PosY);
+    translate(PosX - camX, PosY - camY);
     Wandering();
     rotate(radians(Rotation));
     this.MoveAnt();
+    fill(255);
     triangle(-3, 5, 0, -5, 3, 5);
     popMatrix();
   }
