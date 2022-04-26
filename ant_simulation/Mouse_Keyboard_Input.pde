@@ -27,13 +27,10 @@ void keyReleased() {
 }
 
 void mousePressed() {
-  
-}
-
-void mouseDragged() {
-  
+  s.camera.beingDragged = true;
+  s.camera.updateDraggedLastPosition();
 }
 
 void mouseReleased() {
-  
+  s.camera.beingDragged = false;
 }

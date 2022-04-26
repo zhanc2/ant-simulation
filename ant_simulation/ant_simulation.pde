@@ -9,11 +9,11 @@ void setup() {
 }
   
 void draw() {
-  background(255);
-  fill(0);
+  background(0);
+  fill(255);
   rect(-s.camera.x, -s.camera.y, width, height);
   Anthony.DrawAnt(s.camera.x, s.camera.y);
   s.updateCameraPos();
-  s.updateCameraPos(Anthony.PosX, Anthony.PosY);
+  //s.updateCameraPos(Anthony.PosX, Anthony.PosY);
   
 }

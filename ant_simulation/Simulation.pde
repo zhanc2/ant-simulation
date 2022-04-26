@@ -13,6 +13,7 @@ class Simulation {
   
   void updateCameraPos() {
     this.camera.moveFromKeys();
+    this.camera.moveFromMouse();
   }
   
   void updateCameraPos(float x, float y) {
