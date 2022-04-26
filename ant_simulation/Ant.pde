@@ -14,7 +14,7 @@ class Ant {
   
   private float PosX;
   private float PosY;
-  private int Rotation = 180;
+  private int Rotation = 90;
   private int Turning = 0;
   
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine){
@@ -44,23 +44,64 @@ class Ant {
   void Wandering(){
     float Random = random(0, 100);
     if(Turning == 0){
-      if(Random <= 10){
+      if(Random <= 15){
         Turning = -1;
       }
-      if(Random >= 90){
+      if(Random >= 85){
         Turning = 1;
       }
     }
     else if(Turning == -1 || Turning == 1){
-      if(Random <= 95){
+      if(Random <= 99){
         Turning = 0;
       }
     }
+    //stop running into walls
+    if(PosX <= 25){ 
+      if(Rotation >= 270 && Rotation <= 360){
+        Turning = 1;
+      }
+      if(Rotation <= 270 && Rotation >= 180){
+        Turning = -1;
+      }
+    }
+    if(PosY <= 25){
+      if(Rotation >= 0 && Rotation <= 90){
+        Turning = 1;
+      }
+      if(Rotation <= 360 && Rotation >= 270){
+        Turning = -1;
+      }
+    }
+    
+    if(PosX >= width - 25){ 
+      if(Rotation >= 90 && Rotation <= 180){
+        Turning = 1;
+      }
+      if(Rotation <= 90 && Rotation >= 0){
+        Turning = -1;
+      }
+    }
+    if(PosY >= height - 25){
+      if(Rotation >= 180 && Rotation <= 270){
+        Turning = 1;
+      }
+      if(Rotation <= 180 && Rotation >= 90){
+        Turning = -1;
+      }
+    }
+    
     if(Turning == -1){
       Rotation += -10;
     }
     if(Turning == 1){
       Rotation += 10;
+    }
+    if(Rotation >= 360){
+      Rotation += -360;
+    }
+    if(Rotation <= 0){
+      Rotation += 360;
     }
   }
   

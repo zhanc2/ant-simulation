@@ -2,7 +2,7 @@ Ant Anthony;
 Colony Test;
 
 void setup() {
-  size(500,1000);
+  size(1000,500);
   Anthony = new Ant(50, 50, 3, 5, 5, 5, Test);
 }
   
