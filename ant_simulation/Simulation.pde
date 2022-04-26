@@ -5,4 +5,6 @@ class Simulation {
   // ArrayList<Beetle> beetles;
   // ArrayList<Obstacle> obstacles;
   
+  
+  
 }
