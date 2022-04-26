@@ -2,7 +2,7 @@ class Camera {
   
   float x;
   float y;
-  boolean[] moving;
+  boolean[] moving; // up down left right
   float cameraSpeed;
   
   boolean beingDragged;
@@ -20,6 +20,7 @@ class Camera {
   }
   
   void moveFromKeys() {
+    // true = 1, false = 0, if they are both true or false, no movement, otherwise move in whatever direction
     this.x += (int(moving[3]) - int(moving[2])) * cameraSpeed;
     this.y += (int(moving[1]) - int(moving[0])) * cameraSpeed;
   }
