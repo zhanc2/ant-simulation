@@ -26,10 +26,11 @@ class Ant {
     visionRadius = Vi;
   }
   
-  void DrawAnt(float camX, float camY){
+  void DrawAnt(float camX, float camY, float camZoom){
     pushMatrix();
     translate(PosX - camX, PosY - camY);
-    Wandering();
+    scale(camZoom);
+    Wandering(camZoom);
     rotate(radians(Rotation));
     this.MoveAnt();
     fill(255);
@@ -42,7 +43,7 @@ class Ant {
     PosY += speed * (sin(radians(Rotation - 90)));
   }
   
-  void Wandering(){
+  void Wandering(float zoomAmount){
     float Random = random(0, 100);
     if(Turning == 0){
       if(Random <= 15){
@@ -58,7 +59,7 @@ class Ant {
       }
     }
     //stop running into walls
-    if(PosX <= 25){ 
+    if(PosX <= 25 * zoomAmount){ 
       if(Rotation >= 270 && Rotation <= 360){
         Turning = 1;
       }
@@ -66,7 +67,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY <= 25){
+    if(PosY <= 25 * zoomAmount){
       if(Rotation >= 0 && Rotation <= 90){
         Turning = 1;
       }
@@ -75,7 +76,7 @@ class Ant {
       }
     }
     
-    if(PosX >= width - 25){ 
+    if(PosX >= (width - 25) * zoomAmount){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -83,7 +84,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= height - 25){
+    if(PosY >= (height - 25) * zoomAmount){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }

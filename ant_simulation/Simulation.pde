@@ -8,7 +8,7 @@ class Simulation {
   Camera camera;
   
   Simulation() {
-    this.camera = new Camera(5);
+    this.camera = new Camera(5, 1.1);
   }
   
   void updateCameraPos() {

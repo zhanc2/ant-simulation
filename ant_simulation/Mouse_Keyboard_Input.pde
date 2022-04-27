@@ -34,3 +34,8 @@ void mousePressed() {
 void mouseReleased() {
   s.camera.beingDragged = false;
 }
+
+void mouseWheel(MouseEvent e) {
+  // if the mouse is scrolled up, e.getCount() will return -1, if it is scrolled down, it will return 1=
+  s.camera.zoomInOut(e.getCount());
+}
