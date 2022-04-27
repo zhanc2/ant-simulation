@@ -29,19 +29,19 @@ class Ant {
   void DrawAnt(float camX, float camY, float camZoom){
     pushMatrix();
     translate(PosX - camX, PosY - camY);
-    scale(camZoom);
     Wandering(camZoom);
     rotate(radians(Rotation));
-    this.MoveAnt();
+    this.MoveAnt(camZoom);
     fill(255);
-    triangle(-3, 5, 0, -5, 3, 5);
+    triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     popMatrix();
   }
   
-  void MoveAnt(){
+
+  void MoveAnt(float zoom){
     //makes sure ant moves in all directions
-    PosX += speed * (cos(radians(Rotation - 90)));
-    PosY += speed * (sin(radians(Rotation - 90)));
+    PosX += speed * (cos(radians(Rotation - 90))) * zoom;
+    PosY += speed * (sin(radians(Rotation - 90))) * zoom;
   }
   
   void Wandering(float zoomAmount){
@@ -77,7 +77,7 @@ class Ant {
       }
     }
     
-    if(PosX >= (width - 25) * zoomAmount){ 
+    if(PosX >= ((width - 25) * zoomAmount)){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -85,7 +85,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= (height - 25) * zoomAmount){
+    if(PosY >= ((height - 25) * zoomAmount)){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }
