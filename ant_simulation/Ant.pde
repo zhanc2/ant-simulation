@@ -26,23 +26,26 @@ class Ant {
     visionRadius = Vi;
   }
   
-  void DrawAnt(float camX, float camY){
+  void DrawAnt(float camX, float camY, float camZoom){
     pushMatrix();
     translate(PosX - camX, PosY - camY);
-    Wandering();
+    Wandering(camZoom);
     rotate(radians(Rotation));
-    this.MoveAnt();
+    this.MoveAnt(camZoom);
+    stroke(0);
     fill(255);
-    triangle(-3, 5, 0, -5, 3, 5);
+    triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     popMatrix();
   }
   
-  void MoveAnt(){
-    PosX += speed * (cos(radians(Rotation - 90)));
-    PosY += speed * (sin(radians(Rotation - 90)));
+
+  void MoveAnt(float zoom){
+    //makes sure ant moves in all directions
+    PosX += speed * (cos(radians(Rotation - 90))) * zoom;
+    PosY += speed * (sin(radians(Rotation - 90))) * zoom;
   }
   
-  void Wandering(){
+  void Wandering(float zoomAmount){
     float Random = random(0, 100);
     if(Turning == 0){
       if(Random <= 15){
@@ -53,12 +56,12 @@ class Ant {
       }
     }
     else if(Turning == -1 || Turning == 1){
-      if(Random <= 99){
+      if(Random <= 99.5){
         Turning = 0;
       }
     }
     //stop running into walls
-    if(PosX <= 25){ 
+    if(PosX <= 25 * zoomAmount){ 
       if(Rotation >= 270 && Rotation <= 360){
         Turning = 1;
       }
@@ -66,7 +69,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY <= 25){
+    if(PosY <= 25 * zoomAmount){
       if(Rotation >= 0 && Rotation <= 90){
         Turning = 1;
       }
@@ -75,7 +78,7 @@ class Ant {
       }
     }
     
-    if(PosX >= width - 25){ 
+    if(PosX >= ((width - 25) * zoomAmount)){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -83,7 +86,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= height - 25){
+    if(PosY >= ((height - 25) * zoomAmount)){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }
@@ -92,12 +95,15 @@ class Ant {
       }
     }
     
+    //left turn
     if(Turning == -1){
       Rotation += -10;
     }
+    //right turn
     if(Turning == 1){
       Rotation += 10;
     }
+    //resets rotation
     if(Rotation >= 360){
       Rotation += -360;
     }

@@ -2,19 +2,27 @@ class Camera {
   
   float x;
   float y;
+  float zoom;
   boolean[] moving; // up down left right
+  
   float cameraSpeed;
+  float zoomAmount;
   
   boolean beingDragged;
   PVector draggedLastPosition;
   
-  Camera(float cs) {
+  Camera(float cs, float za) {
     this.x = 0;
     this.y = 0;
+    this.zoom = 1;
+    
+    this.cameraSpeed = cs;
+    this.zoomAmount = za;
+    
     moving = new boolean[4];
     for (int i = 0; i < 4; i++)
       moving[i] = false;
-    this.cameraSpeed = cs;
+    
     this.beingDragged = false;
     this.draggedLastPosition = new PVector(0, 0);
   }
@@ -40,6 +48,28 @@ class Camera {
       
       updateDraggedLastPosition();
     }
+  }
+  
+  void zoomInOut(int val) {
+    
+    // the zoom changes based on the zoomAmount variable, but the camera also has to move to be centered on the user's mouse
+    // the camera's position is based on the top left, not the center, so some repositioning is needed
+    
+    float xShift = float(width)/this.zoom;
+    float yShift = float(height)/this.zoom;
+    if (val > 0) {
+      this.zoom /= this.zoomAmount;
+    }
+    else if (val < 0) {
+      this.zoom *= this.zoomAmount;
+    } else {
+      return;
+    }
+    xShift -= float(width)/(this.zoom);
+    yShift -= float(height)/(this.zoom);
+    
+    this.x += xShift*(float(mouseX)/float(width));
+    this.y += yShift*(float(mouseY)/float(height));
   }
   
 }
