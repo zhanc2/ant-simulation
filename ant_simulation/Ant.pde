@@ -39,6 +39,7 @@ class Ant {
   }
   
   void MoveAnt(){
+    //makes sure ant moves in all directions
     PosX += speed * (cos(radians(Rotation - 90)));
     PosY += speed * (sin(radians(Rotation - 90)));
   }
@@ -54,7 +55,7 @@ class Ant {
       }
     }
     else if(Turning == -1 || Turning == 1){
-      if(Random <= 99){
+      if(Random <= 99.5){
         Turning = 0;
       }
     }
@@ -93,12 +94,15 @@ class Ant {
       }
     }
     
+    //left turn
     if(Turning == -1){
       Rotation += -10;
     }
+    //right turn
     if(Turning == 1){
       Rotation += 10;
     }
+    //resets rotation
     if(Rotation >= 360){
       Rotation += -360;
     }
