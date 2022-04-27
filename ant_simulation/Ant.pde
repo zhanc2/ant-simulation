@@ -32,6 +32,7 @@ class Ant {
     Wandering(camZoom);
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
+    stroke(0);
     fill(255);
     triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     popMatrix();
