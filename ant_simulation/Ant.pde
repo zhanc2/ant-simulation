@@ -5,7 +5,7 @@ class Ant {
   private float age;
   private Colony colony;
   private float direction;
-  private boolean Alive = true;
+  private boolean Alive;
 
   private float speed;
   private float strength;
@@ -27,6 +27,7 @@ class Ant {
     visionRadius = Vi;
     age = 0;
     colony = Mine;
+    Alive = true;
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
@@ -118,8 +119,9 @@ class Ant {
   
   void Aging(){
     age++;
-    if (age >= 30){
-      //this.colony.antDeath(this);
+    if (age >= (30 * frameRate)){
+      colony.antsToBeRemoved.add(this);
+      println("dead?");
     }
   }
   

@@ -22,8 +22,7 @@ class Colony {
     this.antCount = 0;
     this.storedAntsCount = 0;
     this.wanderingAnts = new ArrayList<Ant>();
-    
-    
+    this.antsToBeRemoved = new ArrayList<Ant>();
     
     this.position = new PVector(x, y);
     this.circlePositions = new PVector[10];
@@ -57,6 +56,7 @@ class Colony {
   }
 
   void handleAnts(float camX, float camY, float camZoom) {
+    antDeaths();
     for (Ant a : this.wanderingAnts) {
       a.DrawAnt(camX, camY, camZoom);
     }
@@ -87,10 +87,13 @@ class Colony {
     }
   }
 
-  void antDeath(Ant a) {
-    if (wanderingAnts.size() > 0) {
-      wanderingAnts.remove(a);
-      antCount--;
+  void addAntToDeathList(Ant a) {
+    this.antsToBeRemoved.add(a);
+  }
+
+  void antDeaths() {
+    for (Ant a : this.antsToBeRemoved) {
+      this.wanderingAnts.remove(a);
     }
   }
 }

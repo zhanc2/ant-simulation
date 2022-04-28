@@ -19,7 +19,7 @@ void draw() {
   //rect(-s.camera.x, -s.camera.y, width, height); // a border the size of the screen // for some reason this code doesn't work but the rect() under this does???? idk how scale works
   //popMatrix();
   rect(-s.camera.x, -s.camera.y, width*s.camera.zoom, height*s.camera.zoom);
-  Anthony.DrawAnt(s.camera.x, s.camera.y, s.camera.zoom);
+  //Anthony.DrawAnt(s.camera.x, s.camera.y, s.camera.zoom);
   s.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
   //s.updateCameraPos(Anthony.PosX, Anthony.PosY); // this makes the camera follow anthony
   s.handleColonies();
