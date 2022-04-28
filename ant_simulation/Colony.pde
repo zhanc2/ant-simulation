@@ -51,7 +51,7 @@ class Colony {
   }
 
   void birthAnt() {
-    float ran = random(0, 1000);
+    float ran = random(0, 10000);
     if (ran < storedFood) {
       println("new ant?");
       antCount++;

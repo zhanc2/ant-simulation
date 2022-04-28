@@ -1,19 +1,6 @@
 Ant Anthony;
 Colony Test;
-<<<<<<< HEAD
-Food f;
 
-void setup() {
-  size(500,1000);
-  Anthony = new Ant(50, 50, 5, 5, 5, 5, Test);
-  f= new Food(10,170,120);
-}
-  
-void draw() {
-  background(255);
-  Anthony.DrawAnt();
-  f.display();
-=======
 Simulation s;
 ArrayList<Food> FieldFood;
 
@@ -44,7 +31,4 @@ void RandomSpawning(){
     FieldFood.add(new Food(random(25,50), random(0, width), random(0, height)));
   }
   
-  
-  
->>>>>>> e03b0ccc60399d18492cf59dd16e10431361d901
 }
