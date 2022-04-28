@@ -23,7 +23,7 @@ void draw() {
   s.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
   //s.updateCameraPos(Anthony.PosX, Anthony.PosY); // this makes the camera follow anthony
   s.handleColonies();
-  f.display();
+  f.display(s.camera.x, s.camera.y, s.camera.zoom);
 }
 
 void RandomSpawning(){

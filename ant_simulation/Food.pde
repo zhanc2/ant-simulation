@@ -12,9 +12,9 @@ class Food {
     size= this.weight+4;
   }
   
-  void display() {
+  void display(float camX, float camY, float camZoom) {
     fill(247,197,142);
-    circle(this.position.x,this.position.y,size);
+    circle(this.position.x - camX, this.position.y - camY, size*camZoom);
   }
   
 }
