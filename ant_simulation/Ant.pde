@@ -2,9 +2,10 @@ class Ant {
   
   private PVector position;
   private PVector velocity;
-  private float age;
+  private float age = 0;
   private Colony colony;
   private float direction;
+  private boolean Alive = true;
 
   private float speed;
   private float strength;
@@ -27,15 +28,18 @@ class Ant {
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
-    pushMatrix();
-    translate(PosX - camX, PosY - camY);
-    Wandering(camZoom);
-    rotate(radians(Rotation));
-    this.MoveAnt(camZoom);
-    stroke(0);
-    fill(255);
-    triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
-    popMatrix();
+    if(Alive == true){
+      Aging();
+      pushMatrix();
+      translate(PosX - camX, PosY - camY);
+      Wandering(camZoom);
+      rotate(radians(Rotation));
+      this.MoveAnt(camZoom);
+      stroke(0);
+      fill(255);
+      triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
+      popMatrix();
+    }
   }
   
 
@@ -109,6 +113,13 @@ class Ant {
     }
     if(Rotation <= 0){
       Rotation += 360;
+    }
+  }
+  
+  void Aging(){
+    age++;
+    if (age >= (frameRate * 30)){
+      Alive = false;
     }
   }
   
