@@ -15,7 +15,7 @@ class Ant {
   
   private float PosX;
   private float PosY;
-  private int Rotation = 90;
+  private int Rotation = round(random(0, 360));
   private int Turning = 0;
   
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine){
@@ -32,7 +32,7 @@ class Ant {
   void DrawAnt(float camX, float camY, float camZoom){
     Aging();
     pushMatrix();
-    translate(PosX - camX, PosY - camY);
+    translate(PosX * camZoom - camX, PosY * camZoom - camY);
     Wandering(camZoom);
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
@@ -65,7 +65,7 @@ class Ant {
       }
     }
     //stop running into walls
-    if(PosX <= 25 * zoomAmount){ 
+    if(PosX <= 25){ 
       if(Rotation >= 270 && Rotation <= 360){
         Turning = 1;
       }
@@ -73,7 +73,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY <= 25 * zoomAmount){
+    if(PosY <= 25){
       if(Rotation >= 0 && Rotation <= 90){
         Turning = 1;
       }
@@ -82,7 +82,7 @@ class Ant {
       }
     }
     
-    if(PosX >= ((width - 25) * zoomAmount)){ 
+    if(PosX >= (width - 25)){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -90,7 +90,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= ((height - 25) * zoomAmount)){
+    if(PosY >= (height - 25)){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }
@@ -119,7 +119,7 @@ class Ant {
   void Aging(){
     age++;
     if (age >= 30){
-      this.colony.antDeath(this);
+      //this.colony.antDeath(this);
     }
   }
   
