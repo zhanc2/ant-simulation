@@ -3,6 +3,8 @@ class Colony {
   int antCount;
   int storedAntsCount;
   ArrayList<Ant> wanderingAnts;
+  
+  ArrayList<Ant> antsToBeRemoved;
 
   PVector position;
   PVector[] circlePositions;
@@ -20,6 +22,7 @@ class Colony {
     this.antCount = 0;
     this.storedAntsCount = 0;
     this.wanderingAnts = new ArrayList<Ant>();
+    
     
     
     this.position = new PVector(x, y);
