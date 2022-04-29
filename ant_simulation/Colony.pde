@@ -18,6 +18,8 @@ class Colony {
   
   float lastZoomAmount;
   
+  float size;
+  
   Colony(float x, float y, float aSp, float aSt, float aUC, float aVR) {
     this.antCount = 0;
     this.storedAntsCount = 0;
@@ -37,24 +39,24 @@ class Colony {
     this.storedFood = 100;
     
     this.lastZoomAmount = 1;
+    this.size = 1;
   }
 
   void display(float camX, float camY, float camZoom) {
-    //if (camZoom != this.lastZoomAmount) {
-    //  this.position.x *= camZoom;
-    //  this.position.y *= camZoom;
-    //  this.lastZoomAmount = camZoom;
-    //}
+    if (this.size <= 40) {
+      this.size = min(this.size + 0.5, 40);
+    }
+    
     noStroke();
     pushMatrix();
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
     fill(15, 138, 20);
     for (int i = 0; i < 10; i++) {
-      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, 57 * camZoom);
+      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, this.size + 17 * camZoom);
     }
     fill(77, 46, 22);
     for (int i = 0; i < 10; i++) {
-      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, 40 * camZoom);
+      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, this.size * camZoom);
     }
     popMatrix();
   }
