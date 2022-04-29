@@ -14,7 +14,7 @@ class Food {
   
   void display(float camX, float camY, float camZoom) {
     fill(247,197,142);
-    circle(this.position.x - camX, this.position.y - camY, size*camZoom);
+    circle(this.position.x * camZoom - camX, this.position.y * camZoom - camY, size*camZoom);
   }
   
 }

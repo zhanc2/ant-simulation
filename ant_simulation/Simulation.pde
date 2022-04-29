@@ -8,6 +8,8 @@ class Simulation {
   Camera camera;
   
   Simulation() {
+    this.food = new ArrayList<Food>();
+    
     this.camera = new Camera(5, 1.1);
     this.colonies = new ArrayList<Colony>();
     Colony c = new Colony(750, 250, 3, 5, 5, 5);
@@ -33,6 +35,19 @@ class Simulation {
       if (r < 10) {
         colony.emergeAnt();
       }
+    }
+  }
+  
+  void RandomFoodSpawning(){
+    float randomNum = random(0,100);
+    if(randomNum >= 99.9){
+      this.food.add(new Food(random(25,50), random(0, width), random(0, height)));
+    }
+  }
+  
+  void displayFoods() {
+    for (Food f : this.food) {
+      f.display(this.camera.x, this.camera.y, this.camera.zoom);
     }
   }
   
