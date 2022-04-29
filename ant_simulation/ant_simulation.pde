@@ -13,7 +13,8 @@ void setup() {
   
 void draw() {
   background(0);
-  fill(255);
+  fill(23, 191, 29);
+  noStroke();
   //pushMatrix();
   //scale(s.camera.zoom);
   //rect(-s.camera.x, -s.camera.y, width, height); // a border the size of the screen // for some reason this code doesn't work but the rect() under this does???? idk how scale works

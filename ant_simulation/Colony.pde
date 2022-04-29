@@ -46,9 +46,13 @@ class Colony {
     //  this.lastZoomAmount = camZoom;
     //}
     noStroke();
-    fill(77, 46, 22);
     pushMatrix();
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
+    fill(15, 138, 20);
+    for (int i = 0; i < 10; i++) {
+      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, 57 * camZoom);
+    }
+    fill(77, 46, 22);
     for (int i = 0; i < 10; i++) {
       circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, 40 * camZoom);
     }
@@ -68,6 +72,7 @@ class Colony {
       println("new ant?");
       antCount++;
       storedAntsCount++;
+      storedFood -= 10;
     }
   }
 
