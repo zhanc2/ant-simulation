@@ -1,0 +1,3 @@
+class QueenAnt extends Ant {
+  
+}

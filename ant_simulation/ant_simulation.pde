@@ -1,24 +1,17 @@
-Ant Anthony;
+//Ant Anthony; You will be remembered
 Colony Test;
-Food f;
 Simulation s;
-ArrayList<Food> FieldFood;
 
 void setup() {
   size(1000,500);
   s = new Simulation();
-  Anthony = new Ant(50, 50, 3, 5, 5, 5, Test);
-  f= new Food(10,170,120);
+  //Anthony = new Ant(50, 50, 3, 5, 5, 5, Test);
 }
   
 void draw() {
   background(0);
   fill(23, 191, 29);
   noStroke();
-  //pushMatrix();
-  //scale(s.camera.zoom);
-  //rect(-s.camera.x, -s.camera.y, width, height); // a border the size of the screen // for some reason this code doesn't work but the rect() under this does???? idk how scale works
-  //popMatrix();
   rect(-s.camera.x, -s.camera.y, width*s.camera.zoom, height*s.camera.zoom);
   //Anthony.DrawAnt(s.camera.x, s.camera.y, s.camera.zoom);
   s.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
