@@ -3,8 +3,10 @@ class Colony {
   int antCount;
   int storedAntsCount;
   ArrayList<Ant> wanderingAnts;
+  ArrayList<QueenAnt> queenAnts;
   
   ArrayList<Ant> antsToBeRemoved;
+  ArrayList<QueenAnt> queenAntsToBeRemoved;
 
   PVector position;
   PVector[] circlePositions;
@@ -25,6 +27,8 @@ class Colony {
     this.storedAntsCount = 0;
     this.wanderingAnts = new ArrayList<Ant>();
     this.antsToBeRemoved = new ArrayList<Ant>();
+    this.queenAnts = new ArrayList<QueenAnt>();
+    this.queenAntsToBeRemoved = new ArrayList<QueenAnt>();
     
     this.position = new PVector(x, y);
     this.circlePositions = new PVector[10];
@@ -67,10 +71,35 @@ class Colony {
       a.DrawAnt(camX, camY, camZoom);
     }
   }
+  
+  Colony handleQueens(float camX, float camY, float camZoom, ArrayList<Colony> colonies) {
+    for (QueenAnt qa : this.queenAnts) {
+      qa.DrawAnt(camX,camY,camZoom);
+      if (qa.timeSinceLastCheck > frameRate * 3) {
+        if (qa.checkIfGoodSpot(colonies)) {
+          Colony c = new Colony(qa.PosX, qa.PosY, qa.speed, qa.strength, qa.upkeepCost, qa.visionRadius);
+          this.queenAntsToBeRemoved.add(qa);
+          return c;
+        } else {
+          qa.timeSinceLastCheck = 0;
+        }
+      }
+      qa.timeSinceLastCheck++;
+    }
+    return null;
+  }
 
   void birthAnt() {
     float ran = random(0, 10000);
     if (ran < storedFood) {
+      if (ran < 7) {
+        println("queen ant?");
+        float speedChange = random(-1.5, 1.5);
+        float strengthChange = random(-1.5, 1.5);
+        QueenAnt qa = new QueenAnt(this.position.x, this.position.y, this.antSpeed + speedChange, this.antStrength + strengthChange, this.antUpkeepCost - speedChange, this.antVisionRadius - strengthChange, this);
+        this.queenAnts.add(qa);
+        return;
+      }
       println("new ant?");
       antCount++;
       storedAntsCount++;
@@ -102,5 +131,10 @@ class Colony {
     for (Ant a : this.antsToBeRemoved) {
       this.wanderingAnts.remove(a);
     }
+    for (QueenAnt qa : this.queenAntsToBeRemoved) {
+      this.queenAnts.remove(qa);
+    }
+    this.antsToBeRemoved.clear();
+    this.queenAntsToBeRemoved.clear();
   }
 }

@@ -1,22 +1,23 @@
 class Ant {
   
-  private PVector position;
   private PVector velocity;
   private float age;
   private Colony colony;
   private float direction;
   private boolean Alive;
 
-  private float speed;
-  private float strength;
-  private float nutritionLevel;
-  private float upkeepCost;
-  private float visionRadius;
+  float speed;
+  float strength;
+  float nutritionLevel;
+  float upkeepCost;
+  float visionRadius;
   
-  private float PosX;
-  private float PosY;
+  float PosX;
+  float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
+  
+  String type;
   
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine){
     PosX = X;
@@ -28,6 +29,7 @@ class Ant {
     age = 0;
     colony = Mine;
     Alive = true;
+    type = "regular";
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
@@ -66,7 +68,7 @@ class Ant {
       }
     }
     //stop running into walls
-    if(PosX <= 25){ 
+    if(PosX <= xBoundaries.x + 25){ 
       if(Rotation >= 270 && Rotation <= 360){
         Turning = 1;
       }
@@ -74,7 +76,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY <= 25){
+    if(PosY <= yBoundaries.x + 25){
       if(Rotation >= 0 && Rotation <= 90){
         Turning = 1;
       }
@@ -83,7 +85,7 @@ class Ant {
       }
     }
     
-    if(PosX >= (width - 25)){ 
+    if(PosX >= (xBoundaries.y - 25)){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -91,7 +93,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= (height - 25)){
+    if(PosY >= (yBoundaries.y - 25)){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }
@@ -123,6 +125,10 @@ class Ant {
       colony.antsToBeRemoved.add(this);
       println("dead?");
     }
+  }
+  
+  int getRotation() {
+    return this.Rotation;
   }
   
 }
