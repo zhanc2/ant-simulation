@@ -11,9 +11,9 @@ class Camera {
   boolean beingDragged;
   PVector draggedLastPosition;
   
-  Camera(float cs, float za) {
-    this.x = 0;
-    this.y = 0;
+  Camera(float cs, float za, float xStart, float yStart) {
+    this.x = xStart;
+    this.y = yStart;
     this.zoom = 1;
     
     this.cameraSpeed = cs;
@@ -55,8 +55,8 @@ class Camera {
     // the zoom changes based on the zoomAmount variable, but the camera also has to move to be centered on the user's mouse
     // the camera's position is based on the top left, not the center, so some repositioning is needed
     
-    float xShift = float(width)/this.zoom;
-    float yShift = float(height)/this.zoom;
+    float xShift = xBoundary/this.zoom;
+    float yShift = yBoundary/this.zoom;
     if (val > 0) {
       this.zoom /= this.zoomAmount;
     }
@@ -65,8 +65,8 @@ class Camera {
     } else {
       return;
     }
-    xShift -= float(width)/(this.zoom);
-    yShift -= float(height)/(this.zoom);
+    xShift -= xBoundary/(this.zoom);
+    yShift -= yBoundary/(this.zoom);
     
     this.x += xShift*(float(mouseX)/float(width));
     this.y += yShift*(float(mouseY)/float(height));

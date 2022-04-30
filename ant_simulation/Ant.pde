@@ -68,7 +68,7 @@ class Ant {
       }
     }
     //stop running into walls
-    if(PosX <= xBoundaries.x + 25){ 
+    if(PosX <= 25){ 
       if(Rotation >= 270 && Rotation <= 360){
         Turning = 1;
       }
@@ -76,7 +76,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY <= yBoundaries.x + 25){
+    if(PosY <= 25){
       if(Rotation >= 0 && Rotation <= 90){
         Turning = 1;
       }
@@ -85,7 +85,7 @@ class Ant {
       }
     }
     
-    if(PosX >= (xBoundaries.y - 25)){ 
+    if(PosX >= (xBoundary - 25)){ 
       if(Rotation >= 90 && Rotation <= 180){
         Turning = 1;
       }
@@ -93,7 +93,7 @@ class Ant {
         Turning = -1;
       }
     }
-    if(PosY >= (yBoundaries.y - 25)){
+    if(PosY >= (yBoundary - 25)){
       if(Rotation >= 180 && Rotation <= 270){
         Turning = 1;
       }

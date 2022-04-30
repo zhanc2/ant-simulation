@@ -13,11 +13,11 @@ class Simulation {
     this.food = new ArrayList<Food>();
     this.queens = new ArrayList<QueenAnt>();
     
-    this.camera = new Camera(5, 1.1);
+    this.camera = new Camera(5, 1.1, (xBoundary - width)/2, (yBoundary - height)/2);
     this.colonies = new ArrayList<Colony>();
     this.newColonies = new ArrayList<Colony>();
     
-    Colony c = new Colony(750, 250, 3, 5, 5, 5);
+    Colony c = new Colony(1000, 500, 3, 5, 5, 5);
     this.colonies.add(c);
   }
   

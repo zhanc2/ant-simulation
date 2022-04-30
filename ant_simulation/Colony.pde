@@ -47,8 +47,8 @@ class Colony {
   }
 
   void display(float camX, float camY, float camZoom) {
-    if (this.size <= 40) {
-      this.size = min(this.size + 0.5, 40);
+    if (this.size <= 35) {
+      this.size = min(this.size + 0.5, 35);
     }
     
     noStroke();
@@ -56,7 +56,7 @@ class Colony {
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
     fill(15, 138, 20);
     for (int i = 0; i < 10; i++) {
-      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, this.size + 17 * camZoom);
+      circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, (this.size + 17) * camZoom);
     }
     fill(77, 46, 22);
     for (int i = 0; i < 10; i++) {
