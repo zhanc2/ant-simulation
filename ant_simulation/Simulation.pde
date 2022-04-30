@@ -43,6 +43,7 @@ class Simulation {
       Colony c = colony.handleQueens(this.camera.x, this.camera.y, this.camera.zoom, this.colonies);
       if (c != null) {
         this.newColonies.add(c);
+        println("new colony?");
       }
     }
     for (Colony c : this.newColonies) {
