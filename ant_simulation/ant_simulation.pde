@@ -5,14 +5,13 @@ float xBoundary;
 float yBoundary;
 
 void setup() {
-  size(1000,500);
+  size(1000, 500);
   //Anthony = new Ant(50, 50, 3, 5, 5, 5, Test);
   xBoundary = 2000;
   yBoundary = 1000;
   s = new Simulation();
-  println(-30 % 360);
 }
-  
+
 void draw() {
   background(0);
   fill(23, 191, 29);
@@ -24,4 +23,5 @@ void draw() {
   s.handleColonies();
   s.RandomFoodSpawning();
   s.displayFoods();
+  s.handleBeetles();
 }

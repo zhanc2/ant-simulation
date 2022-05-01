@@ -11,9 +11,10 @@ class Beetle {
   
   float rotationSpeed;
   
-  Beetle(float x, float y, float h, float aKR, float s, float rS) {
+  Beetle(float x, float y, float speed, float h, float aKR, float s, float rS) {
     this.position = new PVector(x, y);
     this.rotation = random(0, 360);
+    this.speed = speed;
     this.health = h;
     this.antKillRate = aKR;
     this.size = s;
@@ -22,8 +23,11 @@ class Beetle {
   
   void display(float camX, float camY, float camZoom) {
     pushMatrix();
+    fill(255, 0, 0);
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
-    rect(-5*camZoom, -8*camZoom, 10*camZoom, 16*camZoom);
+    rotate(radians(this.rotation));
+    noStroke();
+    rect(-12*camZoom, -16*camZoom, 24*camZoom, 32*camZoom);
     popMatrix();
   }
   
@@ -35,15 +39,15 @@ class Beetle {
   void turn() {
     float Random = random(0, 100);
     if(turning == 0){
-      if(Random <= 20){
+      if(Random <= 5){
         turning = -1;
       }
-      if(Random >= 80){
+      if(Random >= 95){
         turning = 1;
       }
     }
     else if(turning == -1 || turning == 1){
-      if(Random <= 99.5){
+      if(Random <= 50){
         turning = 0;
       }
     }

@@ -40,7 +40,7 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 100;
+    this.storedFood = 200;
     
     this.lastZoomAmount = 1;
     this.size = 1;
@@ -92,7 +92,7 @@ class Colony {
   void birthAnt() {
     float ran = random(0, 10000);
     if (ran < storedFood) {
-      if (ran < 7) {
+      if (ran < 2) {
         println("queen ant?");
         float speedChange = random(-1.5, 1.5);
         float strengthChange = random(-1.5, 1.5);

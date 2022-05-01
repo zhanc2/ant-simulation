@@ -3,7 +3,7 @@ class Simulation {
   ArrayList<Colony> colonies;
   ArrayList<Colony> newColonies;
   ArrayList<Food> food;
-  // ArrayList<Beetle> beetles;
+   ArrayList<Beetle> beetles;
   // ArrayList<Obstacle> obstacles;
   ArrayList<QueenAnt> queens;
   
@@ -12,6 +12,7 @@ class Simulation {
   Simulation() {
     this.food = new ArrayList<Food>();
     this.queens = new ArrayList<QueenAnt>();
+    this.beetles = new ArrayList<Beetle>();
     
     this.camera = new Camera(5, 1.1, (xBoundary - width)/2, (yBoundary - height)/2);
     this.colonies = new ArrayList<Colony>();
@@ -66,6 +67,31 @@ class Simulation {
   void displayFoods() {
     for (Food f : this.food) {
       f.display(this.camera.x, this.camera.y, this.camera.zoom);
+    }
+  }
+  
+  void handleBeetles() {
+    randomBeetleSpawning();
+    for (Beetle b : this.beetles) {
+      b.display(this.camera.x, this.camera.y, this.camera.zoom);
+      b.move(this.camera.zoom);
+      b.turn();
+    }
+  }
+  
+  void randomBeetleSpawning() {
+    float r = random(0, 100);
+    if (r < 0.3) {
+      float h = random(80, 120);
+      //float xP, yP;
+      //int tries = 0;
+      //while (tries < 3) {
+      //  xP = random(0, xBoundary);
+      //  yP = random(0, yBoundary);
+      //}
+      Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(1, 2.5), h, 10, h/100, random(8, 12));
+      this.beetles.add(b);
+      println("new beetle?");
     }
   }
   
