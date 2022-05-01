@@ -1,10 +1,7 @@
 class Ant {
   
-  private PVector velocity;
   private float age;
   private Colony colony;
-  private float direction;
-  private boolean Alive;
 
   float speed;
   float strength;
@@ -28,7 +25,6 @@ class Ant {
     visionRadius = Vi;
     age = 0;
     colony = Mine;
-    Alive = true;
     type = "regular";
   }
   

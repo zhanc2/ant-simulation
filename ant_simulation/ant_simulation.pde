@@ -10,6 +10,7 @@ void setup() {
   xBoundary = 2000;
   yBoundary = 1000;
   s = new Simulation();
+  println(-30 % 360);
 }
   
 void draw() {
