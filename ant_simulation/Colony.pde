@@ -137,4 +137,10 @@ class Colony {
     this.antsToBeRemoved.clear();
     this.queenAntsToBeRemoved.clear();
   }
+  
+  void PassFoodToAnt(ArrayList food) {
+    for(Ant a: this.wanderingAnts){
+      a.KnowFood(food);
+    }
+  }
 }

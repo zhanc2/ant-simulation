@@ -95,4 +95,10 @@ class Simulation {
     }
   }
   
+  void PassFood() {
+    for(Colony c: this.colonies){
+      c.PassFoodToAnt(food);
+    }
+  }
+  
 }

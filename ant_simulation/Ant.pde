@@ -13,6 +13,7 @@ class Ant {
   float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
+  ArrayList<Food> FoodToFind;
   
   String type;
   
@@ -98,6 +99,12 @@ class Ant {
       }
     }
     
+    for(Food f: FoodToFind){
+      if(f.position.x <= (PosX + visionRadius) && f.position.x >= (PosX - visionRadius) && f.position.y <= (PosY + visionRadius) && f.position.y >= (PosY + visionRadius)){
+        
+      }
+    }
+    
     //left turn
     if(Turning == -1){
       Rotation += -10;
@@ -125,5 +132,9 @@ class Ant {
   
   int getRotation() {
     return this.Rotation;
+  }
+  
+  void KnowFood(ArrayList tempFood) {
+    FoodToFind = tempFood;
   }
 }
