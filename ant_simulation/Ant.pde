@@ -126,5 +126,4 @@ class Ant {
   int getRotation() {
     return this.Rotation;
   }
-  
 }
