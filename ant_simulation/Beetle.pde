@@ -120,13 +120,14 @@ class Beetle {
   }
   
   void destroyAnts(ArrayList<Ant> ants) {
-    if (this.timeSinceLastLunge > 60) {
+    if (this.timeSinceLastLunge > 0.5*frameRate) {
       if (!this.lunging) {
         for (Ant a : ants) {
           if ((this.position.x-a.PosX)*(this.position.x-a.PosX) + (this.position.y-a.PosY)*(this.position.y-a.PosY) < (this.attackRadius*this.attackRadius)) {
             a.die("beetle");
             this.lungeAtAnt(a);
             this.timeSinceLastLunge = 0;
+            break;
           }
         }
       }

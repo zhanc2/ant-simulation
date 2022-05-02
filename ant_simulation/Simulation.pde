@@ -84,7 +84,7 @@ class Simulation {
   
   void randomBeetleSpawning() {
     float r = random(0, 100);
-    if (r < 0.1) {
+    if (r < 1) {
       float h = random(80, 120);
       //float xP, yP;
       //int tries = 0;

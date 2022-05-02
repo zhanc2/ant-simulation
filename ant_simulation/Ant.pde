@@ -22,22 +22,49 @@ class Ant {
   boolean fading;
   int fadeAmount;
   
+  ArrayList<Particle> deathParticles;
+  boolean exploding;
+  int explodeTime;
+  
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine, color C){
     this.PosX = X;
     this.PosY = Y;
+    
     this.speed = Sp;
     this.strength = St;
     this.upkeepCost = Up;
     this.visionRadius = Vi;
+    
     this.age = 0;
     this.colony = Mine;
     this.type = "regular";
+    
     this.c = C;
+    
     this.fading = false;
     this.fadeAmount = 255;
+    
+    this.deathParticles = new ArrayList<Particle>();
+    this.exploding = false;
+    this.explodeTime = 0;
+    
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
+    if (this.exploding) {
+      if (this.explodeTime < 20) {
+        for (Particle p : this.deathParticles) {
+          p.display(camX, camY, camZoom);
+          p.move(camZoom);
+          p.speed *= 0.7;
+        }
+        this.explodeTime++;
+      } else {
+        this.deathParticles.clear();
+        this.colony.antsToBeRemoved.add(this);
+      }
+      return;
+    }
     Aging();
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
@@ -47,8 +74,8 @@ class Ant {
     stroke(0);
     if (this.fading) {
       if (this.fadeAmount > 0) {
-        fill(red(this.c), green(this.c), blue(this.c), this.fadeAmount);
-        this.fadeAmount -= 15;
+        fill(this.c, this.fadeAmount);
+        this.fadeAmount -= 10;
       } else {
         colony.antsToBeRemoved.add(this);
       }
@@ -151,8 +178,14 @@ class Ant {
     if (deathType.equals("age")) {
       this.fading = true;
       return;
+    } else if (deathType.equals("beetle")) {
+      for (int i = 0; i < 14; i++) {
+        Particle p = new Particle(this.PosX, this.PosY, 7, random(0, 360), this.c);
+        deathParticles.add(p);
+      }
+      this.exploding = true;
+      this.explodeTime = 0;
     }
-    colony.antsToBeRemoved.add(this);
   }
   
   int getRotation() {

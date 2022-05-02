@@ -42,7 +42,7 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 100;
+    this.storedFood = 1000;
     
     this.lastZoomAmount = 1;
     this.size = 1;
@@ -104,7 +104,7 @@ class Colony {
         this.queenAnts.add(qa);
         return;
       }
-      println("new ant?");
+      //println("new ant?");
       antCount++;
       storedAntsCount++;
       storedFood -= 10;
@@ -116,7 +116,7 @@ class Colony {
       Ant a = new Ant(this.position.x, this.position.y, this.antSpeed, this.antStrength, this.antUpkeepCost, this.antVisionRadius, this, this.c);
       wanderingAnts.add(a);
       storedAntsCount--;
-      println("ant spawned?");
+      //println("ant spawned?");
     }
   }
 
