@@ -46,10 +46,10 @@ class Beetle {
   
   void move(float zoom) {
     if (this.lunging) {
-      if (this.lungeTime < 10) {
+      if (this.lungeTime < 7) {
         position.x += speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
         position.y += speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
-      } else if (this.lungeTime < 20) {
+      } else if (this.lungeTime < 14) {
         position.x -= speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
         position.y -= speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
       } else {

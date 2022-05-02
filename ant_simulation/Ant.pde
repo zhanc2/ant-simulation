@@ -17,7 +17,9 @@ class Ant {
   
   String type;
   
-  Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine){
+  color c;
+  
+  Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine, color C){
     PosX = X;
     PosY = Y;
     speed = Sp;
@@ -27,6 +29,7 @@ class Ant {
     age = 0;
     colony = Mine;
     type = "regular";
+    this.c = C;
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
@@ -37,7 +40,7 @@ class Ant {
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
-    fill(255);
+    fill(this.c);
     triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     popMatrix();
   }

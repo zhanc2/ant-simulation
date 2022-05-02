@@ -5,7 +5,7 @@ class QueenAnt extends Ant {
   float timeSinceLastCheck = 0;
   
   QueenAnt(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine) {
-    super(X, Y, Sp, St, Up, Vi, Mine);
+    super(X, Y, Sp, St, Up, Vi, Mine, color(0));
     this.satisfactoryDistance = 500;
     this.visionRadius = Vi;
     this.type = "queen";
@@ -18,7 +18,7 @@ class QueenAnt extends Ant {
     rotate(radians(getRotation()));
     this.MoveAnt(camZoom);
     stroke(0);
-    fill(0, 0, 255);
+    fill(255);
     triangle(-4*camZoom, 6*camZoom, 0, -6*camZoom, 4*camZoom, 6*camZoom);
     popMatrix();
   }

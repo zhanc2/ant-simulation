@@ -22,6 +22,8 @@ class Colony {
   
   float size;
   
+  color c;
+  
   Colony(float x, float y, float aSp, float aSt, float aUC, float aVR) {
     this.antCount = 0;
     this.storedAntsCount = 0;
@@ -40,10 +42,12 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 100;
+    this.storedFood = 1000;
     
     this.lastZoomAmount = 1;
     this.size = 1;
+    
+    this.c = color(random(175, 255), random(175, 255), random(175, 255));
   }
 
   void display(float camX, float camY, float camZoom) {
@@ -109,7 +113,7 @@ class Colony {
 
   void emergeAnt() {
     if (storedAntsCount > 0) {
-      Ant a = new Ant(this.position.x, this.position.y, this.antSpeed, this.antStrength, this.antUpkeepCost, this.antVisionRadius, this);
+      Ant a = new Ant(this.position.x, this.position.y, this.antSpeed, this.antStrength, this.antUpkeepCost, this.antVisionRadius, this, this.c);
       wanderingAnts.add(a);
       storedAntsCount--;
       println("ant spawned?");
