@@ -10,6 +10,9 @@ void keyPressed() {
       s.camera.moving[3] = true;
     }
   }
+  else if (key == ' ') {
+    s.camera.recenter();
+  }
 }
 
 void keyReleased() {

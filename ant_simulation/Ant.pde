@@ -99,11 +99,11 @@ class Ant {
       }
     }
     
-    for(Food f: FoodToFind){
-      if(f.position.x <= (PosX + visionRadius) && f.position.x >= (PosX - visionRadius) && f.position.y <= (PosY + visionRadius) && f.position.y >= (PosY + visionRadius)){
+    //for(Food f: FoodToFind){
+      //if(f.position.x <= (PosX + visionRadius) && f.position.x >= (PosX - visionRadius) && f.position.y <= (PosY + visionRadius) && f.position.y >= (PosY + visionRadius)){
         
-      }
-    }
+      //}
+    //}
     
     //left turn
     if(Turning == -1){

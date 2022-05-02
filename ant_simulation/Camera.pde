@@ -72,4 +72,9 @@ class Camera {
     this.y += yShift*(float(mouseY)/float(height));
   }
   
+  
+  void recenter() {
+    this.x = xBoundary/(2) - (xBoundary)/4;
+    this.y = yBoundary/(2) - (yBoundary)/4;
+  }
 }
