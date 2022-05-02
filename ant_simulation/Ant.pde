@@ -19,28 +19,42 @@ class Ant {
   
   color c;
   
+  boolean fading;
+  int fadeAmount;
+  
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine, color C){
-    PosX = X;
-    PosY = Y;
-    speed = Sp;
-    strength = St;
-    upkeepCost = Up;
-    visionRadius = Vi;
-    age = 0;
-    colony = Mine;
-    type = "regular";
+    this.PosX = X;
+    this.PosY = Y;
+    this.speed = Sp;
+    this.strength = St;
+    this.upkeepCost = Up;
+    this.visionRadius = Vi;
+    this.age = 0;
+    this.colony = Mine;
+    this.type = "regular";
     this.c = C;
+    this.fading = false;
+    this.fadeAmount = 255;
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
     Aging();
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
-    Wandering(camZoom);
+    Wandering();
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
-    fill(this.c);
+    if (this.fading) {
+      if (this.fadeAmount > 0) {
+        fill(red(this.c), green(this.c), blue(this.c), this.fadeAmount);
+        this.fadeAmount -= 15;
+      } else {
+        colony.antsToBeRemoved.add(this);
+      }
+    }
+    else
+      fill(this.c);
     triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     popMatrix();
   }
@@ -52,7 +66,7 @@ class Ant {
     PosY += speed * (sin(radians(Rotation - 90))) * zoom;
   }
   
-  void Wandering(float zoomAmount){
+  void Wandering(){
     float Random = random(0, 100);
     if(Turning == 0){
       if(Random <= 15){
@@ -128,9 +142,17 @@ class Ant {
   void Aging(){
     age++;
     if (age >= (30 * frameRate)){
-      colony.antsToBeRemoved.add(this);
+      die("age");
       println("dead?");
     }
+  }
+  
+  void die(String deathType) {
+    if (deathType.equals("age")) {
+      this.fading = true;
+      return;
+    }
+    colony.antsToBeRemoved.add(this);
   }
   
   int getRotation() {

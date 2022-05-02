@@ -14,7 +14,7 @@ class QueenAnt extends Ant {
   void DrawAnt(float camX, float camY, float camZoom){
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
-    Wandering(camZoom);
+    Wandering();
     rotate(radians(getRotation()));
     this.MoveAnt(camZoom);
     stroke(0);

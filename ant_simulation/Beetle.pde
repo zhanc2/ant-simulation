@@ -16,6 +16,7 @@ class Beetle {
   boolean lunging;
   int lungeTime;
   float lungeDirection;
+  float timeSinceLastLunge;
   
   Beetle(float x, float y, float speed, float h, float aKR, float s, float rS, float aR) {
     this.position = new PVector(x, y);
@@ -29,6 +30,7 @@ class Beetle {
     this.lunging = false;
     this.lungeTime = 0;
     this.lungeDirection = 0;
+    this.timeSinceLastLunge = 0;
   }
   
   void display(float camX, float camY, float camZoom) {
@@ -46,12 +48,12 @@ class Beetle {
   
   void move(float zoom) {
     if (this.lunging) {
-      if (this.lungeTime < 7) {
-        position.x += speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
-        position.y += speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
-      } else if (this.lungeTime < 14) {
-        position.x -= speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
-        position.y -= speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
+      if (this.lungeTime < 8) {
+        position.x += speed*6 * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y += speed*6 * (sin(radians(this.lungeDirection - 90))) * zoom;
+      } else if (this.lungeTime < 16) {
+        position.x -= speed*6 * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y -= speed*6 * (sin(radians(this.lungeDirection - 90))) * zoom;
       } else {
         this.lunging = false;
       }
@@ -118,13 +120,18 @@ class Beetle {
   }
   
   void destroyAnts(ArrayList<Ant> ants) {
-    if (!this.lunging) {
-      for (Ant a : ants) {
-        if ((this.position.x-a.PosX)*(this.position.x-a.PosX) + (this.position.y-a.PosY)*(this.position.y-a.PosY) < (this.attackRadius*this.attackRadius)) {
-          //a.die();
-          this.lungeAtAnt(a);
+    if (this.timeSinceLastLunge > 60) {
+      if (!this.lunging) {
+        for (Ant a : ants) {
+          if ((this.position.x-a.PosX)*(this.position.x-a.PosX) + (this.position.y-a.PosY)*(this.position.y-a.PosY) < (this.attackRadius*this.attackRadius)) {
+            a.die("beetle");
+            this.lungeAtAnt(a);
+            this.timeSinceLastLunge = 0;
+          }
         }
       }
+    } else {
+      this.timeSinceLastLunge++;
     }
   }
   
