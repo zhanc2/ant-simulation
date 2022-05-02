@@ -81,7 +81,7 @@ class Simulation {
   
   void randomBeetleSpawning() {
     float r = random(0, 100);
-    if (r < 0.3) {
+    if (r < 0.1) {
       float h = random(80, 120);
       //float xP, yP;
       //int tries = 0;
@@ -89,7 +89,7 @@ class Simulation {
       //  xP = random(0, xBoundary);
       //  yP = random(0, yBoundary);
       //}
-      Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(1, 2.5), h, 10, h/100, random(8, 12));
+      Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(0.5, 1.5), h, 10, h/100, random(8, 12));
       this.beetles.add(b);
       println("new beetle?");
     }
