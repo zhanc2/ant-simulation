@@ -40,7 +40,7 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 200;
+    this.storedFood = 100;
     
     this.lastZoomAmount = 1;
     this.size = 1;
