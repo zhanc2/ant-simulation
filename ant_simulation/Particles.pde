@@ -22,7 +22,7 @@ class Particle {
   void display(float camX, float camY, float camZoom) {
     //println("DO SOMETHING");
     pushMatrix();
-    translate(this.position.x - camX, this.position.y - camY);
+    translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
     rotate(this.rotation);
     fill(this.c, this.opacity);
     noStroke();
