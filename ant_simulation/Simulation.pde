@@ -74,6 +74,9 @@ class Simulation {
     randomBeetleSpawning();
     for (Beetle b : this.beetles) {
       b.display(this.camera.x, this.camera.y, this.camera.zoom);
+      for (Colony c : this.colonies) {
+        b.destroyAnts(c.wanderingAnts);
+      }
       b.move(this.camera.zoom);
       b.turn();
     }
@@ -89,7 +92,7 @@ class Simulation {
       //  xP = random(0, xBoundary);
       //  yP = random(0, yBoundary);
       //}
-      Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(0.5, 1.5), h, 10, h/100, random(8, 12));
+      Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(0.5, 1.5), h, 10, h/100, random(8, 12), 50);
       this.beetles.add(b);
       println("new beetle?");
     }

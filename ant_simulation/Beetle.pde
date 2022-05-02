@@ -9,9 +9,15 @@ class Beetle {
   float antKillRate;
   float size;
   
+  float attackRadius;
+  
   float rotationSpeed;
   
-  Beetle(float x, float y, float speed, float h, float aKR, float s, float rS) {
+  boolean lunging;
+  int lungeTime;
+  float lungeDirection;
+  
+  Beetle(float x, float y, float speed, float h, float aKR, float s, float rS, float aR) {
     this.position = new PVector(x, y);
     this.rotation = random(0, 360);
     this.speed = speed;
@@ -19,19 +25,39 @@ class Beetle {
     this.antKillRate = aKR;
     this.size = s;
     this.rotationSpeed = rS;
+    this.attackRadius = aR;
+    this.lunging = false;
+    this.lungeTime = 0;
+    this.lungeDirection = 0;
   }
   
   void display(float camX, float camY, float camZoom) {
     pushMatrix();
-    fill(255, 0, 0);
+    stroke(0);
+    fill(255);
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
-    rotate(radians(this.rotation));
-    noStroke();
+    if (this.lunging)
+      rotate(radians(this.lungeDirection));
+    else
+      rotate(radians(this.rotation));
     rect(-12*camZoom, -16*camZoom, 24*camZoom, 32*camZoom);
     popMatrix();
   }
   
   void move(float zoom) {
+    if (this.lunging) {
+      if (this.lungeTime < 10) {
+        position.x += speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y += speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
+      } else if (this.lungeTime < 20) {
+        position.x -= speed*7 * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y -= speed*7 * (sin(radians(this.lungeDirection - 90))) * zoom;
+      } else {
+        this.lunging = false;
+      }
+      this.lungeTime++;
+      return;
+    }
     position.x += speed * (cos(radians(rotation - 90))) * zoom;
     position.y += speed * (sin(radians(rotation - 90))) * zoom;
   }
@@ -85,8 +111,46 @@ class Beetle {
         turning = -1;
       }
     }
-    this.rotation += this.rotationSpeed * this.turning;
-    this.rotation = (this.rotation + 360) % 360;
+    if (!this.lunging) {
+      this.rotation += this.rotationSpeed * this.turning;
+      this.rotation = (this.rotation + 360) % 360;
+    }
+  }
+  
+  void destroyAnts(ArrayList<Ant> ants) {
+    if (!this.lunging) {
+      for (Ant a : ants) {
+        if ((this.position.x-a.PosX)*(this.position.x-a.PosX) + (this.position.y-a.PosY)*(this.position.y-a.PosY) < (this.attackRadius*this.attackRadius)) {
+          //a.die();
+          this.lungeAtAnt(a);
+        }
+      }
+    }
+  }
+  
+  void lungeAtAnt(Ant a) {
+    float alpha, xDiff, yDiff;
+    xDiff = a.PosX - this.position.x;
+    yDiff = a.PosY - this.position.y;
+    
+    if (xDiff != 0)
+      alpha = atan(abs(yDiff / xDiff));
+    else
+      alpha = PI/4;
+    
+    if (xDiff < 0 && yDiff > 0)
+      alpha = PI/2 - alpha;
+    else if (xDiff < 0 && yDiff < 0)
+      alpha = PI/2 + alpha;
+    else if (xDiff > 0 && yDiff < 0)
+      alpha = PI - alpha;
+      
+    alpha = degrees(alpha);
+    alpha = (alpha + 180) % 360;
+    
+    this.lunging = true;
+    this.lungeDirection = alpha;
+    this.lungeTime = 0;  
   }
   
 }

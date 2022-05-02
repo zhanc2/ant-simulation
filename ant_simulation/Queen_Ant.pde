@@ -25,7 +25,7 @@ class QueenAnt extends Ant {
   
   boolean checkIfGoodSpot(ArrayList<Colony> colonies) {
     for (Colony c : colonies) {
-      if (dist(this.PosX, this.PosY, c.position.x, c.position.y) < this.satisfactoryDistance) {
+      if ((this.PosX-c.position.x)*(this.PosX-c.position.x) + (this.PosY-c.position.y)*(this.PosY-c.position.y) < this.satisfactoryDistance*this.satisfactoryDistance) {
         return false;
       }
     }

@@ -92,7 +92,7 @@ class Colony {
   void birthAnt() {
     float ran = random(0, 10000);
     if (ran < storedFood) {
-      if (ran < 2) {
+      if (ran < storedFood/100) {
         println("queen ant?");
         float speedChange = random(-1.5, 1.5);
         float strengthChange = random(-1.5, 1.5);
