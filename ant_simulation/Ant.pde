@@ -75,7 +75,7 @@ class Ant {
     if (this.fading) {
       if (this.fadeAmount > 0) {
         fill(this.c, this.fadeAmount);
-        this.fadeAmount -= 10;
+        this.fadeAmount -= 10 * simulationSpeed;
       } else {
         colony.antsToBeRemoved.add(this);
       }
@@ -89,8 +89,8 @@ class Ant {
 
   void MoveAnt(float zoom){
     //makes sure ant moves in all directions
-    PosX += speed * (cos(radians(Rotation - 90))) * zoom;
-    PosY += speed * (sin(radians(Rotation - 90))) * zoom;
+    PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
+    PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
   }
   
   void Wandering(){
@@ -168,7 +168,7 @@ class Ant {
   
   void Aging(){
     age++;
-    if (age >= (30 * frameRate)){
+    if (age >= (30 * frameRate / simulationSpeed)){
       die("age");
       println("dead?");
     }

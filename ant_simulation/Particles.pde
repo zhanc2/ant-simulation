@@ -28,12 +28,12 @@ class Particle {
     noStroke();
     triangle(-1.5*camZoom, 3*camZoom, 0, -3*camZoom, 1.5*camZoom, 3*camZoom);
     popMatrix();
-    this.opacity -= 15;
+    this.opacity -= 15 * simulationSpeed;
   }
   
   void move(float zoom) {
-    this.position.x += this.speed * (cos(radians(this.direction - 90))) * zoom;
-    this.position.y += this.speed * (sin(radians(this.direction - 90))) * zoom;
+    this.position.x += this.speed * (cos(radians(this.direction - 90))) * zoom * simulationSpeed;
+    this.position.y += this.speed * (sin(radians(this.direction - 90))) * zoom * simulationSpeed;
   }
   
   

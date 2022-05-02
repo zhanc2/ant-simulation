@@ -1,3 +1,7 @@
+import g4p_controls.*;
+
+float simulationSpeed = 1;
+
 //Ant Anthony; You will be remembered
 Simulation s;
 

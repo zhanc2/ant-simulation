@@ -42,7 +42,7 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 1000;
+    this.storedFood = 500;
     
     this.lastZoomAmount = 1;
     this.size = 1;
@@ -52,7 +52,7 @@ class Colony {
 
   void display(float camX, float camY, float camZoom) {
     if (this.size <= 35) {
-      this.size = min(this.size + 0.5, 35);
+      this.size = min(this.size + 0.5*simulationSpeed, 35);
     }
     
     noStroke();
@@ -79,7 +79,7 @@ class Colony {
   Colony handleQueens(float camX, float camY, float camZoom, ArrayList<Colony> colonies) {
     for (QueenAnt qa : this.queenAnts) {
       qa.DrawAnt(camX,camY,camZoom);
-      if (qa.timeSinceLastCheck > frameRate * 3) {
+      if (qa.timeSinceLastCheck > frameRate * 3f/simulationSpeed) {
         if (qa.checkIfGoodSpot(colonies)) {
           Colony c = new Colony(qa.PosX, qa.PosY, qa.speed, qa.strength, qa.upkeepCost, qa.visionRadius);
           this.queenAntsToBeRemoved.add(qa);
@@ -93,10 +93,10 @@ class Colony {
     return null;
   }
 
-  void birthAnt() {
-    float ran = random(0, 10000);
+  void birthAnt(float spawnRate) {
+    float ran = random(0, 10000f/simulationSpeed);
     if (ran < storedFood) {
-      if (ran < storedFood/100) {
+      if (ran < storedFood/spawnRate) {
         println("queen ant?");
         float speedChange = random(-1.5, 1.5);
         float strengthChange = random(-1.5, 1.5);

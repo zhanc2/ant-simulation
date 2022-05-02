@@ -48,20 +48,20 @@ class Beetle {
   
   void move(float zoom) {
     if (this.lunging) {
-      if (this.lungeTime < 8) {
-        position.x += speed*6 * (cos(radians(this.lungeDirection - 90))) * zoom;
+      if (this.lungeTime < 8f/simulationSpeed) {
+        position.x += speed*6*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
         position.y += speed*6 * (sin(radians(this.lungeDirection - 90))) * zoom;
-      } else if (this.lungeTime < 16) {
-        position.x -= speed*6 * (cos(radians(this.lungeDirection - 90))) * zoom;
-        position.y -= speed*6 * (sin(radians(this.lungeDirection - 90))) * zoom;
+      } else if (this.lungeTime < 16f/simulationSpeed) {
+        position.x -= speed*6*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y -= speed*6*simulationSpeed * (sin(radians(this.lungeDirection - 90))) * zoom;
       } else {
         this.lunging = false;
       }
       this.lungeTime++;
       return;
     }
-    position.x += speed * (cos(radians(rotation - 90))) * zoom;
-    position.y += speed * (sin(radians(rotation - 90))) * zoom;
+    position.x += speed * (cos(radians(rotation - 90))) * zoom * simulationSpeed;
+    position.y += speed * (sin(radians(rotation - 90))) * zoom * simulationSpeed;
   }
   
   void turn() {
@@ -120,7 +120,7 @@ class Beetle {
   }
   
   void destroyAnts(ArrayList<Ant> ants) {
-    if (this.timeSinceLastLunge > 0.5*frameRate) {
+    if (this.timeSinceLastLunge > 0.5*frameRate/simulationSpeed) {
       if (!this.lunging) {
         for (Ant a : ants) {
           if (!a.fading && !a.exploding) {

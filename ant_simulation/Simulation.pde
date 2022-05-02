@@ -7,6 +7,11 @@ class Simulation {
   // ArrayList<Obstacle> obstacles;
   ArrayList<QueenAnt> queens;
   
+  float foodSpawnRate;
+  float queenSpawnRate;
+  float simulationSpeed;
+  float beetleSpawnRate;
+  
   Camera camera;
   
   Simulation() {
@@ -20,6 +25,11 @@ class Simulation {
     
     Colony c = new Colony(1000, 500, 3, 5, 5, 5);
     this.colonies.add(c);
+    
+    this.foodSpawnRate = 0.1;
+    this.queenSpawnRate = 5;
+    this.simulationSpeed = 1;
+    this.beetleSpawnRate = 0.1;
   }
   
   void updateCameraPos() {
@@ -36,7 +46,7 @@ class Simulation {
     for (Colony colony : this.colonies) {
       colony.display(this.camera.x, this.camera.y, this.camera.zoom);
       colony.handleAnts(this.camera.x, this.camera.y, this.camera.zoom);
-      colony.birthAnt();
+      colony.birthAnt(this.queenSpawnRate*20);
       float r = random(0, 100);
       if (r < 10) {
         colony.emergeAnt();
@@ -58,8 +68,8 @@ class Simulation {
   }
   
   void RandomFoodSpawning(){
-    float randomNum = random(0,100);
-    if(randomNum >= 99.9){
+    float randomNum = random(0,100f/simulationSpeed);
+    if(randomNum < this.foodSpawnRate){
       this.food.add(new Food(random(25,50), random(0, width), random(0, height)));
     }
   }
@@ -83,8 +93,8 @@ class Simulation {
   }
   
   void randomBeetleSpawning() {
-    float r = random(0, 100);
-    if (r < 1) {
+    float r = random(0, 100f/simulationSpeed);
+    if (r < this.beetleSpawnRate) {
       float h = random(80, 120);
       //float xP, yP;
       //int tries = 0;
@@ -94,7 +104,6 @@ class Simulation {
       //}
       Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(0.5, 1.5), h, 10, h/100, random(8, 12), 50);
       this.beetles.add(b);
-      println("new beetle?");
     }
   }
   
