@@ -6,6 +6,7 @@ String[] pausePlayStrings = {"Pause", "Play"};
 int startingColonyAmount = 1;
 
 //Ant Anthony; You will be remembered
+
 Simulation s;
 
 float xBoundary;

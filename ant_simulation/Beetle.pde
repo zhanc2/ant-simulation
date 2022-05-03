@@ -1,7 +1,7 @@
 class Beetle {
   
   PVector position;
-  float rotation;
+  int rotation;
   float speed;
   int turning;
   
@@ -20,7 +20,7 @@ class Beetle {
   
   Beetle(float x, float y, float speed, float h, float aKR, float s, float rS, float aR) {
     this.position = new PVector(x, y);
-    this.rotation = random(0, 360);
+    this.rotation = round(random(0, 360));
     this.speed = speed;
     this.health = h;
     this.antKillRate = aKR;
@@ -80,39 +80,28 @@ class Beetle {
       }
     }
     
-    if(position.x <= 25){ 
-      if(rotation >= 270 && rotation <= 360){
-        turning = 1;
-      }
-      if(rotation <= 270 && rotation >= 180){
-        turning = -1;
-      }
-    }
-    if(position.y <= 25){
-      if(rotation >= 0 && rotation <= 90){
-        turning = 1;
-      }
-      if(rotation <= 360 && rotation >= 270){
-        turning = -1;
-      }
-    }
+    if(this.position.x <= 25)
+      if (180 <= rotation && rotation <= 360 && rotation != 270)
+        turning = (rotation-270)/abs(rotation-270);
+      if (rotation == 270)
+        turning = round((random(0, 1)*2)-1);
+        
+    if(this.position.y <= 25)
+      if(rotation >= 0 && rotation <= 90 || rotation <= 360 && rotation >= 270)
+        turning = (360-this.rotation-91)/abs(360-rotation-91);
     
-    if(position.x >= (xBoundary - 25)){ 
-      if(rotation >= 90 && rotation <= 180){
-        turning = 1;
-      }
-      if(rotation <= 90 && rotation >= 0){
-        turning = -1;
-      }
-    }
-    if(position.y >= (yBoundary - 25)){
-      if(rotation >= 180 && rotation <= 270){
-        turning = 1;
-      }
-      if(rotation <= 180 && rotation >= 90){
-        turning = -1;
-      }
-    }
+    if(this.position.x >= (xBoundary - 25))
+      if(rotation >= 0 && rotation <= 180 && rotation != 90)
+        turning = (rotation-90)/abs(rotation-90);
+      if (rotation == 90)
+        turning = round((random(0, 1)*2)-1);
+        
+    if(this.position.y >= (yBoundary - 25))
+      if(rotation >= 90 && rotation <= 270 || rotation != 180)
+        turning = (rotation-180)/abs(rotation-180);
+      if(rotation == 180)
+        turning = round((random(0, 1)*2)-1);
+
     if (!this.lunging) {
       this.rotation += this.rotationSpeed * this.turning * simulationSpeed;
       this.rotation = (this.rotation + 360) % 360;
