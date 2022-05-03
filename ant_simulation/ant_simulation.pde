@@ -9,6 +9,7 @@ float xBoundary;
 float yBoundary;
 
 void setup() {
+  createGUI();
   size(1000, 500);
   //Anthony = new Ant(50, 50, 3, 5, 5, 5, Test);
   xBoundary = 2000;

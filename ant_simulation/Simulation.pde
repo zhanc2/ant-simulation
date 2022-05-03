@@ -26,8 +26,8 @@ class Simulation {
     Colony c = new Colony(1000, 500, 3, 5, 5, 100);
     this.colonies.add(c);
     
-    this.foodSpawnRate = 1;
-    this.queenSpawnRate = 1;
+    this.foodSpawnRate = 0.5;
+    this.queenSpawnRate = 5;
     this.simulationSpeed = 1;
     this.beetleSpawnRate = 0.1;
   }
@@ -70,7 +70,7 @@ class Simulation {
   void RandomFoodSpawning(){
     float randomNum = random(0,100f/simulationSpeed);
     if(randomNum < this.foodSpawnRate){
-      this.food.add(new Food(random(25,50), random(0, width), random(0, height)));
+      this.food.add(new Food(random(25,50), random(0, xBoundary), random(0, yBoundary)));
     }
   }
   
