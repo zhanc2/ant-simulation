@@ -23,7 +23,7 @@ class Simulation {
     this.colonies = new ArrayList<Colony>();
     this.newColonies = new ArrayList<Colony>();
     
-    Colony c = new Colony(1000, 500, 3, 5, 5, 5);
+    Colony c = new Colony(1000, 500, 3, 5, 5, 100);
     this.colonies.add(c);
     
     this.foodSpawnRate = 0.1;

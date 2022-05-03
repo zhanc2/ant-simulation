@@ -13,7 +13,7 @@ class Ant {
   float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
-  ArrayList<Food> FoodToFind;
+  ArrayList<Food> FoodToFind = new ArrayList();
   
   String type;
   
@@ -146,9 +146,28 @@ class Ant {
       float TriX = PosX - f.position.x;
       float TriY = PosY - f.position.y;
       float TriH = (TriX * TriX) + (TriY * TriY);
+      float foodAngle;
       TriH = TriH / TriH;
       if(TriH <= visionRadius){
-        
+        foodAngle = asin(TriX / TriH);
+        if(TriX < 0 && TriY < 0){
+          foodAngle += 90;
+        }
+        if(TriX > 0 && TriY < 0){
+          foodAngle += 180;
+        }
+        if(TriY > 0 && TriY > 0){
+          foodAngle += 270;
+        }
+        if(TriY < 0 && TriY > 0){
+          foodAngle += 0;
+        }
+        if(Rotation > foodAngle){
+          Turning = -1;
+        }
+        if(Rotation < foodAngle){
+          Turning = 1;
+        }
       }
     }
     
@@ -171,7 +190,7 @@ class Ant {
   
   void Aging(){
     age++;
-    if (age >= (30 * frameRate / simulationSpeed)){
+    if (age >= (45 * frameRate / simulationSpeed)){
       die("age");
       println("dead?");
     }
