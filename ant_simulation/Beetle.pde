@@ -120,7 +120,7 @@ class Beetle {
   }
   
   void destroyAnts(ArrayList<Ant> ants) {
-    if (this.timeSinceLastLunge > 0.5*frameRate/simulationSpeed) {
+    if (this.timeSinceLastLunge > (0.5/simulationSpeed)*frameRate) {
       if (!this.lunging) {
         for (Ant a : ants) {
           if (!a.fading && !a.exploding) {

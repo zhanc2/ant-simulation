@@ -18,7 +18,7 @@ class QueenAnt extends Ant {
     rotate(radians(getRotation()));
     this.MoveAnt(camZoom);
     stroke(0);
-    fill(255);
+    fill(0);
     triangle(-4*camZoom, 6*camZoom, 0, -6*camZoom, 4*camZoom, 6*camZoom);
     popMatrix();
   }

@@ -31,8 +31,20 @@ public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpaw
 } //_CODE_:foodSpawnRateSlider:883490:
 
 public void qSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:queenSpawnRateSlider:691773:
-  s.queenSpawnRate = queenSpawnRateSlider.getValueF() + 2;
+  s.queenSpawnRate = 5 - queenSpawnRateSlider.getValueF() + 2;
 } //_CODE_:queenSpawnRateSlider:691773:
+
+public void pausePlayButtonClick(GButton source, GEvent event) { //_CODE_:pausePlayButton:331840:
+  paused = !paused;
+  pausePlayButton.setText(pausePlayStrings[int(paused)]);
+} //_CODE_:pausePlayButton:331840:
+
+public void button1_click1(GButton source, GEvent event) { //_CODE_:restartButton:225406:
+  simulationSpeed = 1;
+  s = new Simulation();
+  paused = false;
+  pausePlayButton.setText(pausePlayStrings[int(paused)]);
+} //_CODE_:restartButton:225406:
 
 
 
@@ -88,6 +100,12 @@ public void createGUI(){
   queenSpawnRateLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   queenSpawnRateLabel.setText("Queen Spawn Rate");
   queenSpawnRateLabel.setOpaque(false);
+  pausePlayButton = new GButton(userGUI, 40, 180, 80, 30);
+  pausePlayButton.setText("Pause");
+  pausePlayButton.addEventHandler(this, "pausePlayButtonClick");
+  restartButton = new GButton(userGUI, 200, 180, 80, 30);
+  restartButton.setText("Restart");
+  restartButton.addEventHandler(this, "button1_click1");
   userGUI.loop();
 }
 
@@ -102,3 +120,5 @@ GSlider foodSpawnRateSlider;
 GLabel foodSpawnRateLabel; 
 GSlider queenSpawnRateSlider; 
 GLabel queenSpawnRateLabel; 
+GButton pausePlayButton; 
+GButton restartButton; 
