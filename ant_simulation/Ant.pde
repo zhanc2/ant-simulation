@@ -142,32 +142,31 @@ class Ant {
         Turning = -1;
       }
     }
-    for(Food f : this.FoodToFind){
+    for(Food f : s.food){
       float TriX = PosX - f.position.x;
       float TriY = PosY - f.position.y;
       float TriH = (TriX * TriX) + (TriY * TriY);
       float foodAngle;
-      TriH = TriH / TriH;
+      TriH = sqrt(TriH);
       if(TriH <= visionRadius){
-        foodAngle = asin(TriX / TriH);
+        foodAngle = radians(asin(TriY / TriH)); //<>//
         if(TriX < 0 && TriY < 0){
-          foodAngle += 90;
+          foodAngle = foodAngle + 90;
         }
         if(TriX > 0 && TriY < 0){
-          foodAngle += 180;
+          foodAngle = foodAngle + 180;
         }
         if(TriY > 0 && TriY > 0){
-          foodAngle += 270;
+          foodAngle = foodAngle + 270;
         }
-        if(TriY < 0 && TriY > 0){
-          foodAngle += 0;
-        }
+        
         if(Rotation > foodAngle){
           Turning = -1;
         }
         if(Rotation < foodAngle){
           Turning = 1;
         }
+        break;
       }
     }
     

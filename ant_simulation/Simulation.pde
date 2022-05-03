@@ -26,8 +26,8 @@ class Simulation {
     Colony c = new Colony(1000, 500, 3, 5, 5, 100);
     this.colonies.add(c);
     
-    this.foodSpawnRate = 0.1;
-    this.queenSpawnRate = 5;
+    this.foodSpawnRate = 1;
+    this.queenSpawnRate = 1;
     this.simulationSpeed = 1;
     this.beetleSpawnRate = 0.1;
   }
