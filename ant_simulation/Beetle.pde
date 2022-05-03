@@ -114,13 +114,13 @@ class Beetle {
       }
     }
     if (!this.lunging) {
-      this.rotation += this.rotationSpeed * this.turning;
+      this.rotation += this.rotationSpeed * this.turning * simulationSpeed;
       this.rotation = (this.rotation + 360) % 360;
     }
   }
   
   void destroyAnts(ArrayList<Ant> ants) {
-    if (this.timeSinceLastLunge > (0.5/simulationSpeed)*frameRate) {
+    if (this.timeSinceLastLunge > (simulationSpeed)*frameRate) {
       if (!this.lunging) {
         for (Ant a : ants) {
           if (!a.fading && !a.exploding) {

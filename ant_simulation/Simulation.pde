@@ -26,10 +26,30 @@ class Simulation {
     Colony c = new Colony(1000, 500, 3, 5, 5, 100);
     this.colonies.add(c);
     
+    if (startingColonyAmount > 1) {
+      for (int i = 1; i < startingColonyAmount; i++) {
+        Colony co = new Colony(random(0, xBoundary), random(0, yBoundary), 3, 5, 5, 100);
+        this.colonies.add(co);
+      }
+    }
+    
     this.foodSpawnRate = 0.5;
-    this.queenSpawnRate = 5;
+    this.queenSpawnRate = 100;
     this.simulationSpeed = 1;
     this.beetleSpawnRate = 0.1;
+  }
+  
+  void run() {
+    background(0);
+    fill(23, 191, 29);
+    noStroke();
+    rect(-this.camera.x, -this.camera.y, 2*width*this.camera.zoom, 2*height*this.camera.zoom);
+    this.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
+    this.PassFood();
+    this.handleColonies();
+    this.RandomFoodSpawning();
+    this.displayFoods();
+    this.handleBeetles();
   }
   
   void updateCameraPos() {
@@ -46,7 +66,7 @@ class Simulation {
     for (Colony colony : this.colonies) {
       colony.display(this.camera.x, this.camera.y, this.camera.zoom);
       colony.handleAnts(this.camera.x, this.camera.y, this.camera.zoom);
-      colony.birthAnt(this.queenSpawnRate*20);
+      colony.birthAnt(this.queenSpawnRate);
       float r = random(0, 100);
       if (r < 10) {
         colony.emergeAnt();

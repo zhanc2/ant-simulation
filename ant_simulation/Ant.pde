@@ -13,7 +13,13 @@ class Ant {
   float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
+  
   ArrayList<Food> FoodToFind = new ArrayList();
+  boolean locatedFood;
+  PVector foodLocation;
+  float locatedFoodSize;
+  boolean contactingFood;
+  boolean returningWithFood;
   
   String type;
   
@@ -47,6 +53,11 @@ class Ant {
     this.deathParticles = new ArrayList<Particle>();
     this.exploding = false;
     this.explodeTime = 0;
+    
+    this.locatedFood = false;
+    this.contactingFood = false;
+    this.returningWithFood = false;
+    this.foodLocation = new PVector();
     
   }
   
@@ -89,8 +100,10 @@ class Ant {
 
   void MoveAnt(float zoom){
     //makes sure ant moves in all directions
-    PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
-    PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
+    if (!this.contactingFood) {
+      PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
+      PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
+    }
   }
   
   void Wandering(){
@@ -142,41 +155,47 @@ class Ant {
         Turning = -1;
       }
     }
-    for(Food f : s.food){
-      float TriX = PosX - f.position.x;
-      float TriY = PosY - f.position.y;
-      float TriH = (TriX * TriX) + (TriY * TriY);
-      float foodAngle;
-      TriH = sqrt(TriH);
-      if(TriH <= visionRadius){
-        foodAngle = radians(asin(TriY / TriH)); //<>//
-        if(TriX < 0 && TriY < 0){
-          foodAngle = foodAngle + 90;
+    
+    if (!this.locatedFood && !this.returningWithFood) {
+      for(Food f : s.food){
+        this.locatedFood = true;
+        this.foodLocation = f.position;
+        this.locatedFoodSize = f.size;
+        float TriX = PosX - f.position.x;
+        float TriY = PosY - f.position.y;
+        float TriH = (TriX * TriX) + (TriY * TriY);
+        float foodAngle;
+        TriH = sqrt(TriH);
+        if(TriH <= visionRadius){
+          foodAngle = radians(asin(TriY / TriH)); //<>//
+          if(TriX < 0 && TriY < 0){
+            foodAngle = foodAngle + 90;
+          }
+          if(TriX > 0 && TriY < 0){
+            foodAngle = foodAngle + 180;
+          }
+          if(TriY > 0 && TriY > 0){
+            foodAngle = foodAngle + 270;
+          }
+          
+          if(Rotation > foodAngle){
+            Turning = -1;
+          }
+          if(Rotation < foodAngle){
+            Turning = 1;
+          }
+          break;
         }
-        if(TriX > 0 && TriY < 0){
-          foodAngle = foodAngle + 180;
-        }
-        if(TriY > 0 && TriY > 0){
-          foodAngle = foodAngle + 270;
-        }
-        
-        if(Rotation > foodAngle){
-          Turning = -1;
-        }
-        if(Rotation < foodAngle){
-          Turning = 1;
-        }
-        break;
       }
     }
     
     //left turn
     if(Turning == -1){
-      Rotation += -10;
+      Rotation += -10 * simulationSpeed;
     }
     //right turn
     if(Turning == 1){
-      Rotation += 10;
+      Rotation += 10 * simulationSpeed;
     }
     //resets rotation
     if(Rotation >= 360){

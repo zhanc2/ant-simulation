@@ -31,7 +31,7 @@ public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpaw
 } //_CODE_:foodSpawnRateSlider:883490:
 
 public void qSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:queenSpawnRateSlider:691773:
-  s.queenSpawnRate = 5 - queenSpawnRateSlider.getValueF() + 2;
+  s.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 100;
 } //_CODE_:queenSpawnRateSlider:691773:
 
 public void pausePlayButtonClick(GButton source, GEvent event) { //_CODE_:pausePlayButton:331840:
@@ -41,10 +41,16 @@ public void pausePlayButtonClick(GButton source, GEvent event) { //_CODE_:pauseP
 
 public void button1_click1(GButton source, GEvent event) { //_CODE_:restartButton:225406:
   simulationSpeed = 1;
+  startingColonyAmount = Integer.parseInt(initialColonyNumText.getText());
+  //println(initialColonyNumText.getText());
   s = new Simulation();
   paused = false;
   pausePlayButton.setText(pausePlayStrings[int(paused)]);
 } //_CODE_:restartButton:225406:
+
+public void initialColonyNum_change1(GTextField source, GEvent event) { //_CODE_:initialColonyNumText:417934:
+  
+} //_CODE_:initialColonyNumText:417934:
 
 
 
@@ -92,7 +98,7 @@ public void createGUI(){
   foodSpawnRateLabel.setOpaque(false);
   queenSpawnRateSlider = new GSlider(userGUI, 190, 120, 100, 40, 10.0);
   queenSpawnRateSlider.setShowLimits(true);
-  queenSpawnRateSlider.setLimits(3, 0, 5);
+  queenSpawnRateSlider.setLimits(5, 0, 10);
   queenSpawnRateSlider.setNumberFormat(G4P.INTEGER, 0);
   queenSpawnRateSlider.setOpaque(false);
   queenSpawnRateSlider.addEventHandler(this, "qSpawnRate_change1");
@@ -100,12 +106,20 @@ public void createGUI(){
   queenSpawnRateLabel.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   queenSpawnRateLabel.setText("Queen Spawn Rate");
   queenSpawnRateLabel.setOpaque(false);
-  pausePlayButton = new GButton(userGUI, 40, 180, 80, 30);
+  pausePlayButton = new GButton(userGUI, 40, 205, 80, 30);
   pausePlayButton.setText("Pause");
   pausePlayButton.addEventHandler(this, "pausePlayButtonClick");
-  restartButton = new GButton(userGUI, 200, 180, 80, 30);
+  restartButton = new GButton(userGUI, 40, 255, 80, 30);
   restartButton.setText("Restart");
   restartButton.addEventHandler(this, "button1_click1");
+  label1 = new GLabel(userGUI, 130, 210, 130, 20);
+  label1.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  label1.setText("Initial Colony Number:");
+  label1.setOpaque(false);
+  initialColonyNumText = new GTextField(userGUI, 260, 210, 30, 20, G4P.SCROLLBARS_NONE);
+  initialColonyNumText.setPromptText("1");
+  initialColonyNumText.setOpaque(true);
+  initialColonyNumText.addEventHandler(this, "initialColonyNum_change1");
   userGUI.loop();
 }
 
@@ -122,3 +136,5 @@ GSlider queenSpawnRateSlider;
 GLabel queenSpawnRateLabel; 
 GButton pausePlayButton; 
 GButton restartButton; 
+GLabel label1; 
+GTextField initialColonyNumText; 

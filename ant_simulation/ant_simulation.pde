@@ -3,6 +3,8 @@ import g4p_controls.*;
 float simulationSpeed = 1;
 boolean paused = false;
 String[] pausePlayStrings = {"Pause", "Play"};
+int startingColonyAmount = 1;
+
 //Ant Anthony; You will be remembered
 Simulation s;
 
@@ -19,15 +21,6 @@ void setup() {
 
 void draw() {
   if (!paused) {
-    background(0);
-    fill(23, 191, 29);
-    noStroke();
-    rect(-s.camera.x, -s.camera.y, 2*width*s.camera.zoom, 2*height*s.camera.zoom);
-    s.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
-    s.PassFood();
-    s.handleColonies();
-    s.RandomFoodSpawning();
-    s.displayFoods();
-    s.handleBeetles();
+    s.run();
   }
 }

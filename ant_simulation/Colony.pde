@@ -42,12 +42,12 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 500;
+    this.storedFood = 100;
     
     this.lastZoomAmount = 1;
     this.size = 1;
     
-    this.c = color(random(175, 255), random(175, 255), random(175, 255));
+    this.c = color(random(105, 255), random(105, 255), random(105, 255));
   }
 
   void display(float camX, float camY, float camZoom) {
