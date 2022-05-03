@@ -13,7 +13,7 @@ class Ant {
   float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
-  ArrayList<Food> FoodToFind;
+  ArrayList<Food> FoodToFind = new Food();
   
   String type;
   
@@ -142,15 +142,7 @@ class Ant {
         Turning = -1;
       }
     }
-    for(Food f : this.FoodToFind){
-      float TriX = PosX - f.position.x;
-      float TriY = PosY - f.position.y;
-      float TriH = (TriX * TriX) + (TriY * TriY);
-      TriH = TriH / TriH;
-      if(TriH <= visionRadius){
-        
-      }
-    }
+   
     
     //left turn
     if(Turning == -1){
