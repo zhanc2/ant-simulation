@@ -100,7 +100,10 @@ class Ant {
   
   // This is a last resort protection against ants trying to run off into the void.
   void boundaryDetection() {
-    if (PosX < 0 || PosX > xBoundary || PosY < 0 || PosY > yBoundary) Rotation = round(getDirectionFromPosition(new PVector(1000, 500))) + 90 + round(random(-15,15));
+    if (PosX < 0 || PosX > xBoundary || PosY < 0 || PosY > yBoundary) {
+      this.Rotation = round(getDirectionFromPosition(new PVector(1000, 500))) + 90 + round(random(-15,15));
+      this.currentState = 0;
+    }
   }
   
   void Wandering(){
