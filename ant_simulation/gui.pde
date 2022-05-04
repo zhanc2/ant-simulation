@@ -47,6 +47,10 @@ public void button1_click1(GButton source, GEvent event) { //_CODE_:restartButto
   s = new Simulation();
   paused = false;
   pausePlayButton.setText(pausePlayStrings[int(paused)]);
+  simulationSpeedSlider.setValue(1);
+  beetleSpawnRateSlider.setValue(1);
+  foodSpawnRateSlider.setValue(1);
+  queenSpawnRateSlider.setValue(5);
 } //_CODE_:restartButton:225406:
 
 public void initialColonyNum_change1(GTextField source, GEvent event) { //_CODE_:initialColonyNumText:417934:
