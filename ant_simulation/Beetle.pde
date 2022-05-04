@@ -150,13 +150,13 @@ class Beetle {
     alpha = 90 - alpha;
     
     this.lunging = true;
-    this.lungeDirection = alpha;
+    this.lungeDirection = alpha + 90;
     this.lungeTime = 0;  
   }
   
   void age() {
     age += simulationSpeed;
-    if (age > 5 * frameRate) {
+    if (age > 40 * frameRate) {
       this.fading = true;
     }
   }

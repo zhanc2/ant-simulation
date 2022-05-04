@@ -1,3 +1,12 @@
+/*
+
+Controls:
+Arrow keys to move camera
+Drag screen to move camera
+Scroll up/down to zoom in/out
+
+*/
+
 import g4p_controls.*;
 
 float simulationSpeed = 1;
