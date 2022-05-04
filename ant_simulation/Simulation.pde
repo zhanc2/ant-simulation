@@ -9,7 +9,6 @@ class Simulation {
   
   float foodSpawnRate;
   float queenSpawnRate;
-  float simulationSpeed;
   float beetleSpawnRate;
   
   Camera camera;
@@ -23,20 +22,19 @@ class Simulation {
     this.colonies = new ArrayList<Colony>();
     this.newColonies = new ArrayList<Colony>();
     
-    Colony c = new Colony(1000, 500, 3, 5, 5, 100);
+    Colony c = new Colony(1000, 500, 3, 7, 1, 100);
     this.colonies.add(c);
     
     if (startingColonyAmount > 1) {
       for (int i = 1; i < startingColonyAmount; i++) {
-        Colony co = new Colony(random(0, xBoundary), random(0, yBoundary), 3, 5, 5, 100);
+        Colony co = new Colony(random(0, xBoundary), random(0, yBoundary), 3, 7, 5, 100);
         this.colonies.add(co);
       }
     }
     
-    this.foodSpawnRate = 0.5;
-    this.queenSpawnRate = 100;
-    this.simulationSpeed = 1;
-    this.beetleSpawnRate = 0.1;
+    this.foodSpawnRate = 0.5 * foodSpawnRateSlider.getValueF();
+    this.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 100;
+    this.beetleSpawnRate = 0.1 * beetleSpawnRateSlider.getValueF();
   }
   
   void run() {
@@ -129,7 +127,7 @@ class Simulation {
   
   void PassFood() {
     for(Colony c: this.colonies){
-      c.PassFoodToAnt(food);
+      c.PassFoodToAnt(this.food);
     }
   }
   

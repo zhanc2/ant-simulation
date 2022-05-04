@@ -18,6 +18,7 @@ void setup() {
   xBoundary = 2000;
   yBoundary = 1000;
   s = new Simulation();
+  
 }
 
 void draw() {

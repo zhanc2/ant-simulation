@@ -17,4 +17,8 @@ class Food {
     circle(this.position.x * camZoom - camX, this.position.y * camZoom - camY, size*camZoom);
   }
   
+  void reduceSize(float amount) {
+    this.weight -= amount;
+  }
+  
 }

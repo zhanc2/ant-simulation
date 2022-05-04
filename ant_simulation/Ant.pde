@@ -9,17 +9,19 @@ class Ant {
   float upkeepCost;
   float visionRadius;
   
+  float foodLevel;
+  
   float PosX;
   float PosY;
   private int Rotation = round(random(0, 360));
   private int Turning = 0;
   
-  ArrayList<Food> FoodToFind = new ArrayList();
-  boolean locatedFood;
-  PVector foodLocation;
-  float locatedFoodSize;
-  boolean contactingFood;
-  boolean returningWithFood;
+  ArrayList<Food> FoodToFind = new ArrayList<Food>();
+  
+  int currentState; // finding food, going to the food, obtaining food, returning to colony, depositing food
+  
+  Food theLocatedFood;
+
   
   String type;
   
@@ -31,6 +33,8 @@ class Ant {
   ArrayList<Particle> deathParticles;
   boolean exploding;
   int explodeTime;
+  
+  float carriedFoodAmount;
   
   Ant(float X, float Y, float Sp, float St, float Up, float Vi, Colony Mine, color C){
     this.PosX = X;
@@ -54,10 +58,11 @@ class Ant {
     this.exploding = false;
     this.explodeTime = 0;
     
-    this.locatedFood = false;
-    this.contactingFood = false;
-    this.returningWithFood = false;
-    this.foodLocation = new PVector();
+    this.currentState = 0;
+
+    this.carriedFoodAmount = 0;
+    
+    this.foodLevel = 100;
     
   }
   
@@ -80,6 +85,7 @@ class Ant {
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
     Wandering();
+    //Rotation = 330;
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
@@ -94,13 +100,19 @@ class Ant {
     else
       fill(this.c);
     triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
+    if (this.carriedFoodAmount > 0) {
+      fill(247,197,142);
+      circle(0, 0, this.carriedFoodAmount);
+    }
     popMatrix();
   }
   
 
   void MoveAnt(float zoom){
     //makes sure ant moves in all directions
-    if (!this.contactingFood) {
+    this.foodLevel -= this.upkeepCost/4;
+    if (this.foodLevel <= 0) die("hunger");
+    if (this.currentState != 2 && this.currentState != 4) {
       PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
       PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
     }
@@ -156,54 +168,59 @@ class Ant {
       }
     }
     
-    if (!this.locatedFood && !this.returningWithFood) {
-      for(Food f : s.food){
-        this.locatedFood = true;
-        this.foodLocation = f.position;
-        this.locatedFoodSize = f.size;
-        float TriX = PosX - f.position.x;
-        float TriY = PosY - f.position.y;
-        float TriH = (TriX * TriX) + (TriY * TriY);
-        float foodAngle;
-        TriH = sqrt(TriH);
-        if(TriH <= visionRadius){
-          foodAngle = radians(asin(TriY / TriH)); //<>//
-          if(TriX < 0 && TriY < 0){
-            foodAngle = foodAngle + 90;
+    switch (this.currentState) {
+      
+      case 0:
+        for(Food f : s.food){
+          float TriX = f.position.x - PosX;
+          float TriY = f.position.y - PosY;
+          float TriH = (TriX * TriX) + (TriY * TriY);
+          if(TriH <= this.visionRadius * this.visionRadius){
+            this.currentState++;
+            this.theLocatedFood = f;
+            this.Rotation = round(getDirectionFromPosition(this.theLocatedFood.position)) + 90;
           }
-          if(TriX > 0 && TriY < 0){
-            foodAngle = foodAngle + 180;
-          }
-          if(TriY > 0 && TriY > 0){
-            foodAngle = foodAngle + 270;
-          }
-          
-          if(Rotation > foodAngle){
-            Turning = -1;
-          }
-          if(Rotation < foodAngle){
-            Turning = 1;
-          }
-          break;
         }
-      }
+        this.Rotation += 10 * this.Turning * simulationSpeed;
+        this.Rotation = (this.Rotation + 360) % 360;
+        break;
+        
+      case 1:
+        if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) this.currentState++;
+        break;
+        
+      case 2:
+        float changeInCarrying = min(min(this.theLocatedFood.size, simulationSpeed/5), this.strength-this.carriedFoodAmount);
+        if (this.carriedFoodAmount < this.strength) {
+          this.carriedFoodAmount += changeInCarrying;
+          this.theLocatedFood.reduceSize(changeInCarrying);
+        }
+        if (this.theLocatedFood.size == 0 || this.carriedFoodAmount >= this.strength) {
+          this.currentState++;
+          this.Rotation = round(getDirectionFromPosition(this.colony.position)) + 90;
+        }
+        break;
+        
+      case 3:
+        if (dist(this.PosX, this.PosY, this.colony.position.x, this.colony.position.y) <= this.colony.size) {
+          this.currentState++;
+          this.foodLevel = 100;
+        }
+        break;
+        
+      case 4:
+        float depositAmount = min(this.carriedFoodAmount, simulationSpeed/5);
+        if (this.carriedFoodAmount > 0) {
+          this.carriedFoodAmount -= depositAmount;
+          this.colony.depositFood(depositAmount);
+        } else {
+          this.currentState=0;
+        }
+        break;
+      
     }
     
-    //left turn
-    if(Turning == -1){
-      Rotation += -10 * simulationSpeed;
-    }
-    //right turn
-    if(Turning == 1){
-      Rotation += 10 * simulationSpeed;
-    }
-    //resets rotation
-    if(Rotation >= 360){
-      Rotation += -360;
-    }
-    if(Rotation <= 0){
-      Rotation += 360;
-    }
+    
   }
   
   void Aging(){
@@ -215,7 +232,7 @@ class Ant {
   }
   
   void die(String deathType) {
-    if (deathType.equals("age")) {
+    if (deathType.equals("age") || deathType.equals("hunger")) {
       this.fading = true;
       return;
     } else if (deathType.equals("beetle")) {
@@ -232,7 +249,17 @@ class Ant {
     return this.Rotation;
   }
   
-  void KnowFood(ArrayList tempFood) {
-    FoodToFind = tempFood;
+  void KnowFood(ArrayList<Food> tempFood) {
+    FoodToFind = new ArrayList<Food>(tempFood);
+  }
+  
+  float getDirectionFromPosition(PVector p) {
+    float alpha, xDiff, yDiff;
+    xDiff = p.x - this.PosX;
+    yDiff = p.y - this.PosY; //<>//
+    
+    alpha = (degrees(atan2(xDiff, yDiff)) + 360) % 360;
+    
+    return 90 - alpha; //<>// //<>// //<>// //<>// //<>//
   }
 }

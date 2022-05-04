@@ -41,7 +41,8 @@ public void pausePlayButtonClick(GButton source, GEvent event) { //_CODE_:pauseP
 
 public void button1_click1(GButton source, GEvent event) { //_CODE_:restartButton:225406:
   simulationSpeed = 1;
-  startingColonyAmount = Integer.parseInt(initialColonyNumText.getText());
+  if (initialColonyNumText.getText().isEmpty()) startingColonyAmount = 1;
+  else startingColonyAmount = Integer.parseInt(initialColonyNumText.getText());
   //println(initialColonyNumText.getText());
   s = new Simulation();
   paused = false;

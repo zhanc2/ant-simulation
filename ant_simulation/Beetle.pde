@@ -49,15 +49,16 @@ class Beetle {
   void move(float zoom) {
     if (this.lunging) {
       if (this.lungeTime < 8f/simulationSpeed) {
-        position.x += speed*6*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
-        position.y += speed*6 * (sin(radians(this.lungeDirection - 90))) * zoom;
+        position.x += speed*5*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y += speed*5*simulationSpeed * (sin(radians(this.lungeDirection - 90))) * zoom;
       } else if (this.lungeTime < 16f/simulationSpeed) {
-        position.x -= speed*6*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
-        position.y -= speed*6*simulationSpeed * (sin(radians(this.lungeDirection - 90))) * zoom;
+        position.x -= speed*5*simulationSpeed * (cos(radians(this.lungeDirection - 90))) * zoom;
+        position.y -= speed*5*simulationSpeed * (sin(radians(this.lungeDirection - 90))) * zoom;
       } else {
         this.lunging = false;
       }
       this.lungeTime++;
+      this.timeSinceLastLunge = 0;
       return;
     }
     position.x += speed * (cos(radians(rotation - 90))) * zoom * simulationSpeed;
@@ -116,7 +117,6 @@ class Beetle {
             if ((this.position.x-a.PosX)*(this.position.x-a.PosX) + (this.position.y-a.PosY)*(this.position.y-a.PosY) < (this.attackRadius*this.attackRadius)) {
               a.die("beetle");
               this.lungeAtAnt(a);
-              this.timeSinceLastLunge = 0;
               break;
             }
           }
@@ -132,20 +132,25 @@ class Beetle {
     xDiff = a.PosX - this.position.x;
     yDiff = a.PosY - this.position.y;
     
-    if (xDiff != 0)
-      alpha = atan(abs(yDiff / xDiff));
-    else
-      alpha = PI/4;
-    
-    if (xDiff < 0 && yDiff > 0)
-      alpha = PI/2 - alpha;
-    else if (xDiff < 0 && yDiff < 0)
-      alpha = PI/2 + alpha;
-    else if (xDiff > 0 && yDiff < 0)
-      alpha = PI - alpha;
+    if (xDiff != 0) {
+      alpha = degrees(atan(abs(yDiff / xDiff)));
       
-    alpha = degrees(alpha);
-    alpha = (alpha + 180) % 360;
+      if (yDiff == 0) {
+        if (xDiff > 0) alpha = 0;
+        else alpha = 180;
+      }
+      
+      else if (xDiff < 0 && yDiff < 0)
+        alpha = 180 - alpha;
+      else if (xDiff < 0 && yDiff > 0)
+        alpha = 180 + alpha;
+      else if (xDiff > 0 && yDiff > 0)
+        alpha = 360 - alpha;
+    }
+    else {
+      alpha = 90;
+      if (yDiff > 0) alpha = 270;
+    }
     
     this.lunging = true;
     this.lungeDirection = alpha;

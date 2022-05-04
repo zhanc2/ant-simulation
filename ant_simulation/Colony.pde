@@ -42,7 +42,7 @@ class Colony {
     this.antUpkeepCost = aUC;
     this.antVisionRadius = aVR;
     
-    this.storedFood = 100;
+    this.storedFood = 200;
     
     this.lastZoomAmount = 1;
     this.size = 1;
@@ -100,7 +100,7 @@ class Colony {
         println("queen ant?");
         float speedChange = random(-1.5, 1.5);
         float strengthChange = random(-1.5, 1.5);
-        QueenAnt qa = new QueenAnt(this.position.x, this.position.y, this.antSpeed + speedChange, this.antStrength + strengthChange, this.antUpkeepCost - speedChange, this.antVisionRadius - strengthChange, this);
+        QueenAnt qa = new QueenAnt(this.position.x, this.position.y, this.antSpeed + speedChange, this.antStrength + strengthChange, this.antUpkeepCost - speedChange/2, this.antVisionRadius - strengthChange*10, this);
         this.queenAnts.add(qa);
         return;
       }
@@ -142,9 +142,13 @@ class Colony {
     this.queenAntsToBeRemoved.clear();
   }
   
-  void PassFoodToAnt(ArrayList food) {
+  void PassFoodToAnt(ArrayList<Food> food) {
     for(Ant a: this.wanderingAnts){
       a.KnowFood(food);
     }
+  }
+  
+  void depositFood(float amount) {
+    this.storedFood++;
   }
 }
