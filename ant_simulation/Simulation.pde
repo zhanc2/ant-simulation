@@ -39,15 +39,16 @@ class Simulation {
     
     this.foodSpawnRate = 0.4 * foodSpawnRateSlider.getValueF();
     this.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 90;
-    this.beetleSpawnRate = 0.2 * beetleSpawnRateSlider.getValueF();
+    this.beetleSpawnRate = 0.1 * beetleSpawnRateSlider.getValueF();
   }
   
   void run() {
     background(0);
     fill(23, 191, 29);
     noStroke();
-    rect(-this.camera.x, -this.camera.y, 2*width*this.camera.zoom, 2*height*this.camera.zoom);
-    this.updateCameraPos(); // arrow keys and dragging the screen moves the camera, scrolling up and down changes the zoom amount
+    // this rectangle serves as the terrain that everything takes place on
+    rect(-this.camera.x, -this.camera.y, 2*width*this.camera.zoom, 2*height*this.camera.zoom); 
+    this.updateCameraPos();
     this.PassFood();
     this.handleColonies();
     this.RandomFoodSpawning();
@@ -58,11 +59,6 @@ class Simulation {
   void updateCameraPos() {
     this.camera.moveFromKeys();
     this.camera.moveFromMouse();
-  }
-  
-  void updateCameraPos(float x, float y) {
-    this.camera.x = x - width/2;
-    this.camera.y = y - height/2;
   }
   
   void handleColonies() {
@@ -100,6 +96,8 @@ class Simulation {
   void RandomFoodSpawning(){
     float randomNum = random(0,100f/simulationSpeed);
     if(randomNum < this.foodSpawnRate){
+      // This is so that food doesn't spawn too close to a colony.
+      // If after 5 tries a suitable position still isn't found, food isn't spawned.
       int tries = 0;
       float x, y;
       while (tries < 5) {
@@ -113,7 +111,6 @@ class Simulation {
         }
         tries++;
       }
-      this.food.add(new Food(random(25,50), random(0, xBoundary), random(0, yBoundary)));
     }
   }
   
@@ -146,12 +143,6 @@ class Simulation {
     float r = random(0, 100f/simulationSpeed);
     if (r < this.beetleSpawnRate) {
       float h = random(80, 120);
-      //float xP, yP;
-      //int tries = 0;
-      //while (tries < 3) {
-      //  xP = random(0, xBoundary);
-      //  yP = random(0, yBoundary);
-      //}
       Beetle b = new Beetle(random(0, xBoundary), random(0, yBoundary), random(0.5, 1.5), h, 10, h/100, random(8, 12), 50);
       this.beetles.add(b);
     }

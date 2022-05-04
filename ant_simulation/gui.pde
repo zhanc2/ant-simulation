@@ -23,7 +23,7 @@ public void simSpeed_change1(GSlider source, GEvent event) { //_CODE_:simulation
 } //_CODE_:simulationSpeedSlider:531818:
 
 public void bSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:beetleSpawnRateSlider:653785:
-  s.beetleSpawnRate = 0.2 * beetleSpawnRateSlider.getValueF();
+  s.beetleSpawnRate = 0.1 * beetleSpawnRateSlider.getValueF();
 } //_CODE_:beetleSpawnRateSlider:653785:
 
 public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpawnRateSlider:883490:

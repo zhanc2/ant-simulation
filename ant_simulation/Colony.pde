@@ -137,17 +137,11 @@ class Colony {
     }
   }
 
-  void storeAnt(Ant a) {
-    if (wanderingAnts.size() > 0) {
-      wanderingAnts.remove(a);
-      storedAntsCount++;
-    }
-  }
-
   void addAntToDeathList(Ant a) {
     this.antsToBeRemoved.add(a);
   }
 
+  // You can't edit an ArrayList while iterating through it, so a separate list needs to be kept track of.
   void antDeaths() {
     for (Ant a : this.antsToBeRemoved) {
       this.wanderingAnts.remove(a);
@@ -170,9 +164,7 @@ class Colony {
   }
   
   void death() {
-    if (storedFood <= 20 && this.wanderingAnts.size() < 3) {
-      this.dying = true;
-    }
+    if (storedFood <= 20 && this.wanderingAnts.size() < 3) this.dying = true;
   }
   
   boolean inNeedOfAnts() {

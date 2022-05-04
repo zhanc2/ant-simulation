@@ -72,6 +72,7 @@ class Ant {
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
     Wandering();
+    boundaryDetection();
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
@@ -79,7 +80,7 @@ class Ant {
     if (!this.exploding) triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     if (this.carriedFoodAmount > 0 && !this.exploding) {
       fill(247,197,142);
-      circle(0, 0, this.carriedFoodAmount);
+      circle(0, 0, this.carriedFoodAmount*camZoom);
     }
     popMatrix();
   }
@@ -95,6 +96,11 @@ class Ant {
       PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
       PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
     }
+  }
+  
+  // This is a last resort protection against ants trying to run off into the void.
+  void boundaryDetection() {
+    if (PosX < 0 || PosX > xBoundary || PosY < 0 || PosY > yBoundary) Rotation = round(getDirectionFromPosition(new PVector(1000, 500))) + 90 + round(random(-15,15));
   }
   
   void Wandering(){
@@ -168,6 +174,7 @@ class Ant {
           
         case 1: // moving towards the located food
           Turning = 0;
+          if (this.theLocatedFood == null) this.currentState = 0;
           if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) {
             this.currentState++; //<>//
             this.foodLevel = 100;
@@ -176,6 +183,7 @@ class Ant {
           
         case 2: // picking up food
           Turning = 0;
+          if (this.theLocatedFood == null) this.currentState = 0;
           
           /*
           The amount the ant picks up is the smallest out of:
