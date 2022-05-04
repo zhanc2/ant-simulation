@@ -67,20 +67,7 @@ class Ant {
   }
   
   void DrawAnt(float camX, float camY, float camZoom){
-    if (this.exploding) {
-      if (this.explodeTime < 20) {
-        for (Particle p : this.deathParticles) {
-          p.display(camX, camY, camZoom);
-          p.move(camZoom);
-          p.speed *= 0.7;
-        }
-        this.explodeTime++;
-      } else {
-        this.deathParticles.clear();
-        this.colony.antsToBeRemoved.add(this);
-      }
-      return;
-    }
+    deathProcedures(camX, camY, camZoom);
     Aging();
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
@@ -89,15 +76,8 @@ class Ant {
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
-    if (this.fading) {
-      if (this.fadeAmount > 0) {
-        this.fadeAmount -= 10 * simulationSpeed;
-      } else {
-        colony.antsToBeRemoved.add(this);
-      }
-    }
     fill(this.c, this.fadeAmount);
-    triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
+    if (!this.exploding) triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     if (this.carriedFoodAmount > 0) {
       fill(247,197,142);
       circle(0, 0, this.carriedFoodAmount);
@@ -167,7 +147,7 @@ class Ant {
     }
     
     if (this.type.equals("regular")) {
-      switch (this.currentState) { //<>//
+      switch (this.currentState) {
         
         case 0:
           for(Food f : s.food){
@@ -187,7 +167,7 @@ class Ant {
         case 1:
           Turning = 0;
           if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) {
-            this.currentState++;
+            this.currentState++; //<>//
             this.foodLevel = 100;
           }
           break;
@@ -253,6 +233,30 @@ class Ant {
       }
       this.exploding = true;
       this.explodeTime = 0;
+    }
+  }
+  
+  void deathProcedures(float camX, float camY, float camZoom) {
+    if (this.exploding) {
+      if (this.explodeTime < 20) {
+        for (Particle p : this.deathParticles) {
+          p.display(camX, camY, camZoom);
+          p.move(camZoom);
+          p.speed *= pow(0.7, simulationSpeed);
+        }
+        this.explodeTime += simulationSpeed;
+      } else {
+        this.deathParticles.clear();
+        this.colony.antsToBeRemoved.add(this);
+      }
+    }
+    
+    if (this.fading) {
+      if (this.fadeAmount > 0) {
+        this.fadeAmount -= 10 * simulationSpeed;
+      } else {
+        colony.antsToBeRemoved.add(this);
+      }
     }
   }
   
