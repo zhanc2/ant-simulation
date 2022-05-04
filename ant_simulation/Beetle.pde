@@ -132,25 +132,8 @@ class Beetle {
     xDiff = a.PosX - this.position.x;
     yDiff = a.PosY - this.position.y;
     
-    if (xDiff != 0) {
-      alpha = degrees(atan(abs(yDiff / xDiff)));
-      
-      if (yDiff == 0) {
-        if (xDiff > 0) alpha = 0;
-        else alpha = 180;
-      }
-      
-      else if (xDiff < 0 && yDiff < 0)
-        alpha = 180 - alpha;
-      else if (xDiff < 0 && yDiff > 0)
-        alpha = 180 + alpha;
-      else if (xDiff > 0 && yDiff > 0)
-        alpha = 360 - alpha;
-    }
-    else {
-      alpha = 90;
-      if (yDiff > 0) alpha = 270;
-    }
+    alpha = (degrees(atan2(xDiff, yDiff)) + 360) % 360;
+    alpha = 90 - alpha;
     
     this.lunging = true;
     this.lungeDirection = alpha;

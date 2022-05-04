@@ -110,7 +110,7 @@ class Ant {
 
   void MoveAnt(float zoom){
     //makes sure ant moves in all directions
-    this.foodLevel -= this.upkeepCost/4;
+    this.foodLevel -= this.upkeepCost/6;
     if (this.foodLevel <= 0) die("hunger");
     if (this.currentState != 2 && this.currentState != 4) {
       PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
@@ -168,55 +168,61 @@ class Ant {
       }
     }
     
-    switch (this.currentState) {
-      
-      case 0:
-        for(Food f : s.food){
-          float TriX = f.position.x - PosX;
-          float TriY = f.position.y - PosY;
-          float TriH = (TriX * TriX) + (TriY * TriY);
-          if(TriH <= this.visionRadius * this.visionRadius){
-            this.currentState++;
-            this.theLocatedFood = f;
-            this.Rotation = round(getDirectionFromPosition(this.theLocatedFood.position)) + 90;
+    if (this.type.equals("regular")) {
+      switch (this.currentState) {
+        
+        case 0:
+          for(Food f : s.food){
+            float TriX = f.position.x - PosX;
+            float TriY = f.position.y - PosY;
+            float TriH = (TriX * TriX) + (TriY * TriY);
+            if(TriH <= this.visionRadius * this.visionRadius){
+              this.currentState++;
+              this.theLocatedFood = f;
+              this.Rotation = round(getDirectionFromPosition(this.theLocatedFood.position)) + 90;
+            }
           }
-        }
-        this.Rotation += 10 * this.Turning * simulationSpeed;
-        this.Rotation = (this.Rotation + 360) % 360;
-        break;
+          this.Rotation += 10 * this.Turning * simulationSpeed;
+          this.Rotation = (this.Rotation + 360) % 360;
+          break;
+          
+        case 1:
+          if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) {
+            this.currentState++;
+            this.foodLevel = 100;
+          }
+          break;
+          
+        case 2:
+          float changeInCarrying = min(min(this.theLocatedFood.size, simulationSpeed/5), this.strength-this.carriedFoodAmount);
+          if (this.carriedFoodAmount < this.strength) {
+            this.carriedFoodAmount += changeInCarrying;
+            this.theLocatedFood.reduceSize(changeInCarrying);
+          }
+          if (this.theLocatedFood.size == 0 || this.carriedFoodAmount >= this.strength) {
+            this.currentState++;
+            this.Rotation = round(getDirectionFromPosition(this.colony.position)) + 90;
+          }
+          break;
+          
+        case 3:
+          if (dist(this.PosX, this.PosY, this.colony.position.x, this.colony.position.y) <= this.colony.size) {
+            this.currentState++;
+            this.foodLevel = 100;
+          }
+          break;
+          
+        case 4:
+          float depositAmount = min(this.carriedFoodAmount, simulationSpeed/5);
+          if (this.carriedFoodAmount > 0) {
+            this.carriedFoodAmount -= depositAmount;
+            this.colony.depositFood(depositAmount);
+          } else {
+            this.currentState=0;
+          }
+          break;
         
-      case 1:
-        if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) this.currentState++;
-        break;
-        
-      case 2:
-        float changeInCarrying = min(min(this.theLocatedFood.size, simulationSpeed/5), this.strength-this.carriedFoodAmount);
-        if (this.carriedFoodAmount < this.strength) {
-          this.carriedFoodAmount += changeInCarrying;
-          this.theLocatedFood.reduceSize(changeInCarrying);
-        }
-        if (this.theLocatedFood.size == 0 || this.carriedFoodAmount >= this.strength) {
-          this.currentState++;
-          this.Rotation = round(getDirectionFromPosition(this.colony.position)) + 90;
-        }
-        break;
-        
-      case 3:
-        if (dist(this.PosX, this.PosY, this.colony.position.x, this.colony.position.y) <= this.colony.size) {
-          this.currentState++;
-          this.foodLevel = 100;
-        }
-        break;
-        
-      case 4:
-        float depositAmount = min(this.carriedFoodAmount, simulationSpeed/5);
-        if (this.carriedFoodAmount > 0) {
-          this.carriedFoodAmount -= depositAmount;
-          this.colony.depositFood(depositAmount);
-        } else {
-          this.currentState=0;
-        }
-        break;
+      }
       
     }
     
