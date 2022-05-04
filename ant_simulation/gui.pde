@@ -27,7 +27,7 @@ public void bSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:beetleSp
 } //_CODE_:beetleSpawnRateSlider:653785:
 
 public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpawnRateSlider:883490:
-  s.foodSpawnRate = 0.5 * foodSpawnRateSlider.getValueF();
+  s.foodSpawnRate = 0.4 * foodSpawnRateSlider.getValueF();
 } //_CODE_:foodSpawnRateSlider:883490:
 
 public void qSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:queenSpawnRateSlider:691773:

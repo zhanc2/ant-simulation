@@ -34,7 +34,7 @@ class Simulation {
       }
     }
     
-    this.foodSpawnRate = 0.5 * foodSpawnRateSlider.getValueF();
+    this.foodSpawnRate = 0.4 * foodSpawnRateSlider.getValueF();
     this.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 90;
     this.beetleSpawnRate = 0.2 * beetleSpawnRateSlider.getValueF();
   }
