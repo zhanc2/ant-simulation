@@ -91,14 +91,12 @@ class Ant {
     stroke(0);
     if (this.fading) {
       if (this.fadeAmount > 0) {
-        fill(this.c, this.fadeAmount);
         this.fadeAmount -= 10 * simulationSpeed;
       } else {
         colony.antsToBeRemoved.add(this);
       }
     }
-    else
-      fill(this.c);
+    fill(this.c, this.fadeAmount);
     triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
     if (this.carriedFoodAmount > 0) {
       fill(247,197,142);
@@ -230,8 +228,8 @@ class Ant {
   }
   
   void Aging(){
-    age++;
-    if (age >= (45 * frameRate / simulationSpeed)){
+    age += simulationSpeed;
+    if (age >= (45 * frameRate)){
       die("age");
       println("dead?");
     }

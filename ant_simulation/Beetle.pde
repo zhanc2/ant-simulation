@@ -18,6 +18,10 @@ class Beetle {
   float lungeDirection;
   float timeSinceLastLunge;
   
+  int age;
+  boolean fading;
+  float fadeAmount;
+  
   Beetle(float x, float y, float speed, float h, float aKR, float s, float rS, float aR) {
     this.position = new PVector(x, y);
     this.rotation = round(random(0, 360));
@@ -31,6 +35,8 @@ class Beetle {
     this.lungeTime = 0;
     this.lungeDirection = 0;
     this.timeSinceLastLunge = 0;
+    this.fading = false;
+    this.fadeAmount = 255;
   }
   
   void display(float camX, float camY, float camZoom) {
@@ -42,6 +48,14 @@ class Beetle {
       rotate(radians(this.lungeDirection));
     else
       rotate(radians(this.rotation));
+    if (this.fading) {
+      if (this.fadeAmount > 0) {
+        this.fadeAmount -= 10 * simulationSpeed;
+      } else {
+        s.beetlesToBeRemoved.add(this);
+      }
+    }
+    fill(255, this.fadeAmount);
     rect(-12*camZoom, -16*camZoom, 24*camZoom, 32*camZoom);
     popMatrix();
   }
@@ -138,6 +152,13 @@ class Beetle {
     this.lunging = true;
     this.lungeDirection = alpha;
     this.lungeTime = 0;  
+  }
+  
+  void age() {
+    age += simulationSpeed;
+    if (age > 5 * frameRate) {
+      this.fading = true;
+    }
   }
   
 }

@@ -3,7 +3,8 @@ class Simulation {
   ArrayList<Colony> colonies;
   ArrayList<Colony> newColonies;
   ArrayList<Food> food;
-   ArrayList<Beetle> beetles;
+  ArrayList<Beetle> beetles;
+  ArrayList<Beetle> beetlesToBeRemoved;
   // ArrayList<Obstacle> obstacles;
   ArrayList<QueenAnt> queens;
   
@@ -17,6 +18,7 @@ class Simulation {
     this.food = new ArrayList<Food>();
     this.queens = new ArrayList<QueenAnt>();
     this.beetles = new ArrayList<Beetle>();
+    this.beetlesToBeRemoved = new ArrayList<Beetle>();
     
     this.camera = new Camera(5, 1.1, (xBoundary - width)/2, (yBoundary - height)/2);
     this.colonies = new ArrayList<Colony>();
@@ -88,6 +90,19 @@ class Simulation {
   void RandomFoodSpawning(){
     float randomNum = random(0,100f/simulationSpeed);
     if(randomNum < this.foodSpawnRate){
+      int tries = 0;
+      float x, y;
+      while (tries < 5) {
+        x = random(0, xBoundary);
+        y = random(0, yBoundary);
+        for (Colony c: this.colonies) {
+          if (pow((x-c.position.x), 2) + pow((y-c.position.y), 2) > 900) {
+            this.food.add(new Food(random(25,50), x, y));
+            return;
+          }
+        }
+        tries++;
+      }
       this.food.add(new Food(random(25,50), random(0, xBoundary), random(0, yBoundary)));
     }
   }
@@ -100,8 +115,15 @@ class Simulation {
   
   void handleBeetles() {
     randomBeetleSpawning();
+    
+    for (Beetle b : this.beetlesToBeRemoved) {
+      this.beetles.remove(b);
+    }
+    this.beetlesToBeRemoved.clear();
+    
     for (Beetle b : this.beetles) {
       b.display(this.camera.x, this.camera.y, this.camera.zoom);
+      b.age();
       for (Colony c : this.colonies) {
         b.destroyAnts(c.wanderingAnts);
       }
