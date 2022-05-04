@@ -13,6 +13,7 @@ class Particle {
     this.speed = s;
     this.direction = d;
     this.c = C;
+    this.c = color(red(this.c)-50, green(this.c)-50, blue(this.c)-50);
     
     this.opacity = 255;
     

@@ -23,7 +23,7 @@ public void simSpeed_change1(GSlider source, GEvent event) { //_CODE_:simulation
 } //_CODE_:simulationSpeedSlider:531818:
 
 public void bSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:beetleSpawnRateSlider:653785:
-  s.beetleSpawnRate = 0.1 * beetleSpawnRateSlider.getValueF();
+  s.beetleSpawnRate = 0.2 * beetleSpawnRateSlider.getValueF();
 } //_CODE_:beetleSpawnRateSlider:653785:
 
 public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpawnRateSlider:883490:
@@ -31,7 +31,7 @@ public void fSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:foodSpaw
 } //_CODE_:foodSpawnRateSlider:883490:
 
 public void qSpawnRate_change1(GSlider source, GEvent event) { //_CODE_:queenSpawnRateSlider:691773:
-  s.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 100;
+  s.queenSpawnRate = (5 - queenSpawnRateSlider.getValueF())*15 + 90;
 } //_CODE_:queenSpawnRateSlider:691773:
 
 public void pausePlayButtonClick(GButton source, GEvent event) { //_CODE_:pausePlayButton:331840:

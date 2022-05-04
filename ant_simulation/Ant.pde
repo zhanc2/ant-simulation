@@ -167,7 +167,7 @@ class Ant {
     }
     
     if (this.type.equals("regular")) {
-      switch (this.currentState) {
+      switch (this.currentState) { //<>//
         
         case 0:
           for(Food f : s.food){
@@ -178,13 +178,14 @@ class Ant {
               this.currentState++;
               this.theLocatedFood = f;
               this.Rotation = round(getDirectionFromPosition(this.theLocatedFood.position)) + 90;
+              this.Turning = 0;
+              break;
             }
           }
-          this.Rotation += 10 * this.Turning * simulationSpeed;
-          this.Rotation = (this.Rotation + 360) % 360;
           break;
           
         case 1:
+          Turning = 0;
           if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) {
             this.currentState++;
             this.foodLevel = 100;
@@ -192,6 +193,7 @@ class Ant {
           break;
           
         case 2:
+          Turning = 0;
           float changeInCarrying = min(min(this.theLocatedFood.size, simulationSpeed/5), this.strength-this.carriedFoodAmount);
           if (this.carriedFoodAmount < this.strength) {
             this.carriedFoodAmount += changeInCarrying;
@@ -204,6 +206,7 @@ class Ant {
           break;
           
         case 3:
+        Turning = 0;
           if (dist(this.PosX, this.PosY, this.colony.position.x, this.colony.position.y) <= this.colony.size) {
             this.currentState++;
             this.foodLevel = 100;
@@ -211,6 +214,7 @@ class Ant {
           break;
           
         case 4:
+          Turning = 0;
           float depositAmount = min(this.carriedFoodAmount, simulationSpeed/5);
           if (this.carriedFoodAmount > 0) {
             this.carriedFoodAmount -= depositAmount;
@@ -223,6 +227,9 @@ class Ant {
       }
       
     }
+    
+    this.Rotation += 10 * this.Turning * simulationSpeed;
+    this.Rotation = (this.Rotation + 360) % 360;
     
     
   }
@@ -260,10 +267,10 @@ class Ant {
   float getDirectionFromPosition(PVector p) {
     float alpha, xDiff, yDiff;
     xDiff = p.x - this.PosX;
-    yDiff = p.y - this.PosY; //<>//
+    yDiff = p.y - this.PosY;
     
     alpha = (degrees(atan2(xDiff, yDiff)) + 360) % 360;
     
-    return 90 - alpha; //<>// //<>// //<>// //<>// //<>//
+    return 90 - alpha; 
   }
 }
