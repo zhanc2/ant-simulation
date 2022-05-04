@@ -72,13 +72,12 @@ class Ant {
     pushMatrix();
     translate(PosX * camZoom - camX, PosY * camZoom - camY);
     Wandering();
-    //Rotation = 330;
     rotate(radians(Rotation));
     this.MoveAnt(camZoom);
     stroke(0);
     fill(this.c, this.fadeAmount);
     if (!this.exploding) triangle(-3*camZoom, 5*camZoom, 0, -5*camZoom, 3*camZoom, 5*camZoom);
-    if (this.carriedFoodAmount > 0) {
+    if (this.carriedFoodAmount > 0 && !this.exploding) {
       fill(247,197,142);
       circle(0, 0, this.carriedFoodAmount);
     }
@@ -87,9 +86,11 @@ class Ant {
   
 
   void MoveAnt(float zoom){
-    //makes sure ant moves in all directions
+    // updating hunger
     this.foodLevel -= this.upkeepCost/6;
     if (this.foodLevel <= 0) die("hunger");
+    
+    //makes sure ant moves in all directions
     if (this.currentState != 2 && this.currentState != 4) {
       PosX += speed * (cos(radians(Rotation - 90))) * zoom * simulationSpeed;
       PosY += speed * (sin(radians(Rotation - 90))) * zoom * simulationSpeed;
@@ -97,6 +98,7 @@ class Ant {
   }
   
   void Wandering(){
+    // randomizing the ant's turning (-1 is left, 1 is right)
     float Random = random(0, 100);
     if(Turning == 0){
       if(Random <= 15){
@@ -146,10 +148,10 @@ class Ant {
       }
     }
     
+    // behavior and path finding of ants, queen ants will not follow this
     if (this.type.equals("regular")) {
       switch (this.currentState) {
-        
-        case 0:
+        case 0: // finding food
           for(Food f : s.food){
             float TriX = f.position.x - PosX;
             float TriY = f.position.y - PosY;
@@ -164,7 +166,7 @@ class Ant {
           }
           break;
           
-        case 1:
+        case 1: // moving towards the located food
           Turning = 0;
           if (dist(this.PosX, this.PosY, this.theLocatedFood.position.x, this.theLocatedFood.position.y) <= this.theLocatedFood.size/2) {
             this.currentState++; //<>//
@@ -172,9 +174,19 @@ class Ant {
           }
           break;
           
-        case 2:
+        case 2: // picking up food
           Turning = 0;
+          
+          /*
+          The amount the ant picks up is the smallest out of:
+          1. The food size
+          2. The difference between the current carried amount and the max amount
+          3. The default pickup amount
+          This is so that the ant can't pick up more than it should be able to. 
+          */
           float changeInCarrying = min(min(this.theLocatedFood.size, simulationSpeed/5), this.strength-this.carriedFoodAmount);
+          
+          // The ant will pick up food until it can't carry anymore or until there is no more food to pick up, then it will leave.
           if (this.carriedFoodAmount < this.strength) {
             this.carriedFoodAmount += changeInCarrying;
             this.theLocatedFood.reduceSize(changeInCarrying);
@@ -185,48 +197,45 @@ class Ant {
           }
           break;
           
-        case 3:
-        Turning = 0;
+        case 3: // returning to colony
+          Turning = 0;
           if (dist(this.PosX, this.PosY, this.colony.position.x, this.colony.position.y) <= this.colony.size) {
             this.currentState++;
             this.foodLevel = 100;
           }
           break;
           
-        case 4:
+        case 4: // depositing food
           Turning = 0;
           float depositAmount = min(this.carriedFoodAmount, simulationSpeed/5);
           if (this.carriedFoodAmount > 0) {
             this.carriedFoodAmount -= depositAmount;
             this.colony.depositFood(depositAmount);
           } else {
-            this.currentState=0;
+            this.currentState=0; // resetting the cycle back to finding food
           }
           break;
-        
       }
-      
     }
     
+    // If the ant has a specific direction that it needs to go towards, this.Turing will be zero and won't turn here.
+    // Otherwise, it will turn as normal.
     this.Rotation += 10 * this.Turning * simulationSpeed;
     this.Rotation = (this.Rotation + 360) % 360;
-    
-    
   }
   
+  // Ants will die after 45 seconds from aging.
   void Aging(){
     age += simulationSpeed;
-    if (age >= (45 * frameRate)){
-      die("age");
-      println("dead?");
-    }
+    if (age >= (45 * frameRate)) die("age");
   }
   
+  // Handling the first step of the 2 types of death: fading and exploding.
   void die(String deathType) {
     if (deathType.equals("age") || deathType.equals("hunger")) {
       this.fading = true;
-      return;
     } else if (deathType.equals("beetle")) {
+      // creating the explosion particles
       for (int i = 0; i < 14; i++) {
         Particle p = new Particle(this.PosX, this.PosY, 7, random(0, 360), this.c);
         deathParticles.add(p);
@@ -236,6 +245,7 @@ class Ant {
     }
   }
   
+  // Handling the second step of the deaths: the actual dying animations
   void deathProcedures(float camX, float camY, float camZoom) {
     if (this.exploding) {
       if (this.explodeTime < 20) {
@@ -260,21 +270,26 @@ class Ant {
     }
   }
   
+  // method for the queen ant
   int getRotation() {
     return this.Rotation;
   }
   
+  // passing the food list to the ant
   void KnowFood(ArrayList<Food> tempFood) {
     FoodToFind = new ArrayList<Food>(tempFood);
   }
   
+  // getting a direction from a position relative to the ant
   float getDirectionFromPosition(PVector p) {
     float alpha, xDiff, yDiff;
     xDiff = p.x - this.PosX;
     yDiff = p.y - this.PosY;
     
+    // atan2 returns an angle from polar coordinates
     alpha = (degrees(atan2(xDiff, yDiff)) + 360) % 360;
     
+    // Processing rotates clockwise and our rotation system has an offset of 90 already.
     return 90 - alpha; 
   }
 }

@@ -31,7 +31,5 @@ void setup() {
 }
 
 void draw() {
-  if (!paused) {
-    s.run();
-  }
+  if (!paused) s.run();
 }

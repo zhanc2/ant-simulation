@@ -24,6 +24,9 @@ class Colony {
   
   color c;
   
+  boolean dying;
+  boolean dead;
+  
   Colony(float x, float y, float aSp, float aSt, float aUC, float aVR) {
     this.antCount = 0;
     this.storedAntsCount = 0;
@@ -48,16 +51,23 @@ class Colony {
     this.size = 1;
     
     this.c = color(random(105, 255), random(105, 255), random(105, 255));
+    
+    this.dying = false;
+    this.dead = false;
   }
 
   void display(float camX, float camY, float camZoom) {
-    if (this.size <= 35) {
-      this.size = min(this.size + 0.5*simulationSpeed, 35);
-    }
+    death();
+    // This makes the colony grow when first formed and shrink on death
+    if (this.dying) {
+      if (this.size > 0) this.size = max(this.size - 0.5*simulationSpeed, 0);
+      else this.dead = true;
+    } else if (this.size <= 35) this.size = min(this.size + 0.5*simulationSpeed, 35);
     
     noStroke();
     pushMatrix();
     translate(this.position.x * camZoom - camX, this.position.y * camZoom - camY);
+    // the colony is made up of 10 randomized circles
     fill(15, 138, 20);
     for (int i = 0; i < 10; i++) {
       circle(this.circlePositions[i].x * camZoom, this.circlePositions[i].y * camZoom, (this.size + 17) * camZoom);
@@ -76,6 +86,11 @@ class Colony {
     }
   }
   
+  /*
+  Queen ants will check to see if their current position is far enough from other colonies every 6 seconds.
+  If it is satisfactory, it will return a new colony there and disappear.
+  */
+  
   Colony handleQueens(float camX, float camY, float camZoom, ArrayList<Colony> colonies) {
     for (QueenAnt qa : this.queenAnts) {
       qa.DrawAnt(camX,camY,camZoom);
@@ -93,18 +108,21 @@ class Colony {
     return null;
   }
 
+  /*
+  The spawn rate is based on how much food is stored
+  At first, the ant is stored and doesn't exist, only when it emerges does it become an actual Ant object.
+  Another random check will spawn a queen ant with slightly randomized stats
+  */
   void birthAnt(float spawnRate) {
     float ran = random(0, 10000f/simulationSpeed);
     if (ran < storedFood) {
       if (ran < storedFood/spawnRate) {
-        println("queen ant?");
         float speedChange = random(-1.5, 1.5);
         float strengthChange = random(-1.5, 1.5);
         QueenAnt qa = new QueenAnt(this.position.x, this.position.y, this.antSpeed + speedChange, this.antStrength + strengthChange, this.antUpkeepCost - speedChange/2, this.antVisionRadius - strengthChange*10, this);
         this.queenAnts.add(qa);
         return;
       }
-      //println("new ant?");
       antCount++;
       storedAntsCount++;
       storedFood -= 10;
@@ -116,7 +134,6 @@ class Colony {
       Ant a = new Ant(this.position.x, this.position.y, this.antSpeed, this.antStrength, this.antUpkeepCost, this.antVisionRadius, this, this.c);
       wanderingAnts.add(a);
       storedAntsCount--;
-      //println("ant spawned?");
     }
   }
 
@@ -149,6 +166,16 @@ class Colony {
   }
   
   void depositFood(float amount) {
-    this.storedFood++;
+    this.storedFood += amount;
+  }
+  
+  void death() {
+    if (storedFood <= 20 && this.wanderingAnts.size() < 3) {
+      this.dying = true;
+    }
+  }
+  
+  boolean inNeedOfAnts() {
+    return this.wanderingAnts.size() < 3;
   }
 }

@@ -2,6 +2,7 @@ class Simulation {
   
   ArrayList<Colony> colonies;
   ArrayList<Colony> newColonies;
+  ArrayList<Colony> coloniesToBeRemoved;
   ArrayList<Food> food;
   ArrayList<Beetle> beetles;
   ArrayList<Beetle> beetlesToBeRemoved;
@@ -21,8 +22,10 @@ class Simulation {
     this.beetlesToBeRemoved = new ArrayList<Beetle>();
     
     this.camera = new Camera(5, 1.1, (xBoundary - width)/2, (yBoundary - height)/2);
+    
     this.colonies = new ArrayList<Colony>();
     this.newColonies = new ArrayList<Colony>();
+    this.coloniesToBeRemoved = new ArrayList<Colony>();
     
     Colony c = new Colony(1000, 500, 3, 7, 1, 100);
     this.colonies.add(c);
@@ -64,23 +67,30 @@ class Simulation {
   
   void handleColonies() {
     for (Colony colony : this.colonies) {
-      colony.display(this.camera.x, this.camera.y, this.camera.zoom);
-      colony.handleAnts(this.camera.x, this.camera.y, this.camera.zoom);
-      colony.birthAnt(this.queenSpawnRate);
-      float r = random(0, 100);
-      if (r < 10) {
-        colony.emergeAnt();
-      }
-      Colony c = colony.handleQueens(this.camera.x, this.camera.y, this.camera.zoom, this.colonies);
-      if (c != null) {
-        this.newColonies.add(c);
-        println("new colony?");
+      if (colony.dead) this.coloniesToBeRemoved.add(colony);
+      else {
+        colony.display(this.camera.x, this.camera.y, this.camera.zoom);
+        colony.handleAnts(this.camera.x, this.camera.y, this.camera.zoom);
+        colony.birthAnt(this.queenSpawnRate);
+        float r = random(0, 100);
+        if (r < 10) {
+          colony.emergeAnt();
+        }
+        Colony c = colony.handleQueens(this.camera.x, this.camera.y, this.camera.zoom, this.colonies);
+        if (c != null) {
+          this.newColonies.add(c);
+        }
+        if (colony.inNeedOfAnts()) colony.emergeAnt();
       }
     }
     for (Colony c : this.newColonies) {
       this.colonies.add(c);
     }
     this.newColonies.clear();
+    for (Colony c : this.coloniesToBeRemoved) {
+      this.colonies.remove(c);
+    }
+    this.coloniesToBeRemoved.clear();
   }
 
   void addNewQueen(QueenAnt qa) {
